@@ -2,40 +2,84 @@
   <div>
     <section class="row text-center placeholders">
       <div class="col-6 col-sm-3 placeholder">
-        <h1>24℃</h1>
+        <h1>{{ maxTemp }}℃</h1>
         <h4>最高気温</h4>
         <div class="text-muted">前日+4℃</div>
       </div>
       <div class="col-6 col-sm-3 placeholder">
-        <h1>15℃</h1>
+        <h1>{{ minTemp }}℃</h1>
         <h4>最低気温</h4>
         <span class="text-muted">前日-1℃</span>
       </div>
       <div class="col-6 col-sm-3 placeholder">
-        <h1>81%</h1>
+        <h1>{{ maxHumid }}%</h1>
         <h4>最高湿度</h4>
         <span class="text-muted">前日±0%</span>
       </div>
       <div class="col-6 col-sm-3 placeholder">
-        <h1>72%</h1>
-        <h4>最高湿度</h4>
+        <h1>{{ minHumid }}%</h1>
+        <h4>最低湿度</h4>
         <span class="text-muted">前日+2%</span>
       </div>
     </section>
     <div class="Chart">
-      <weather-chart></weather-chart>
+      <chart :chartData="chartData"></chart>
     </div>
   </div>
 </template>
 
 <script>
-import WeatherChart from './WeatherChart'
+import Chart from './Chart'
 
 export default {
   components: {
-    WeatherChart
+    Chart
+  },
+  data () {
+    return {
+      maxTemp: Number,
+      maxHumid: Number,
+      minTemp: Number,
+      minHumid: Number,
+      chartData: {}
+    }
   },
   mounted () {
+    let self = this
+    self.setWeatherData()
+    window.addEventListener('tempupdate', function (e) {
+      self.setWeatherData()
+    })
+    window.addEventListener('humidupdate', function (e) {
+      self.setWeatherData()
+    })
+  },
+  methods: {
+    setWeatherData () {
+      let tempArray = JSON.parse(localStorage.getItem('temp'))
+      let humidArray = JSON.parse(localStorage.getItem('humid'))
+      let tempDataArray = tempArray.map((o) => o.data)
+      let humidDataArray = humidArray.map((o) => o.data)
+      this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.minTemp = Math.min.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.minHumid = Math.min.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.chartData = {
+        labels: tempArray.map((o) => o.timestamp),
+        datasets: [
+          {
+            label: '温度',
+            backgroundColor: '#FF7257',
+            data: tempDataArray
+          },
+          {
+            label: '湿度',
+            backgroundColor: '#BAFF91',
+            data: humidDataArray
+          }
+        ]
+      }
+    }
   }
 }
 </script>

@@ -25,12 +25,15 @@ new Vue({
       broker: 'ws://192.168.212.33:8080/mqtt',
       mqttUser: 'james-kitchen',
       mqttPass: 'webdino',
-      mqttTopic: 'sensor/002DAEE8/#'
+      mqttTopic: 'sensor/002DAEE8/#',
+      tempTopic: 'sensor/04016897/Temperature',
+      humidTopic: 'sensor/04016897/Humidity',
+      illumTopic: 'sensor/04016777/Illumination'
     }
     this.mqttConnect(c)
   },
   methods: {
-    mqttConnect: function (c) {
+    mqttConnect (c) {
       console.log(c.broker)
       var options = {
         cmd: 'connect',
@@ -46,52 +49,45 @@ new Vue({
         console.log('connected.')
       })
 
-      // 最初に一通りくるらしいのでソレを記録する。
-      let onSwitch = {
-        all: false,
-        AO: false,
-        AI: false,
-        BO: false,
-        B2: false
-      }
-
       c.client.on('message', function (topic, message, packet) {
-        console.log(topic, String.fromCharCode.apply(null, message), packet)
+        // console.log(topic, String.fromCharCode.apply(null, message), packet)
         try {
           var data = JSON.parse(String.fromCharCode.apply(null, message))
-
-          if (data.value.cmd === 'getAll') {
-              // window.location.href='/clock/tokyo/'
+          var dataFormatted = {
+            sensor: topic,
+            data: data.value,
+            timestamp: data.timestamp
           }
 
-          // 全てが一通り来るのを吸収する
-          if (onSwitch.all === false) {
-            switch (data.value) {
-              case 'AO':
-                onSwitch['AO'] = true
-                break
-              case 'AI':
-                onSwitch['AI'] = true
-                break
-              case 'BO':
-                onSwitch['BO'] = true
-                break
-              case 'BI':
-                onSwitch['BI'] = true
-                break
+          var setLocalStorage = function (dataType, dataFormatted) {
+            var dataArray = []
+            if (localStorage.getItem(dataType) !== null) {
+              dataArray = dataArray.concat(JSON.parse(localStorage.getItem(dataType)))
             }
-            if (onSwitch['AO'] && onSwitch['AI'] && onSwitch['BO'] && onSwitch['BI']) {
-              onSwitch['all'] = true
-              console.log('最初の奴はクリア')
-            }
-            return false
+            dataArray.push(dataFormatted)
+            localStorage.setItem(dataType, JSON.stringify(dataArray))
           }
+          let tempevent = new Event('tempupdate')
+          let humidevent = new Event('humidupdate')
+          let illumevent = new Event('illumupdate')
 
-          console.log(data.value)
-
-          if (data.time) {
-            console.log('[pub-sub]:' + (new Date().getTime() - data.time) + ' ms')
+          switch (topic) {
+            case c.tempTopic:
+              setLocalStorage('temp', dataFormatted)
+              window.dispatchEvent(tempevent)
+              break
+            case c.humidTopic:
+              setLocalStorage('humid', dataFormatted)
+              window.dispatchEvent(humidevent)
+              break
+            case c.illumTopic:
+              setLocalStorage('illum', dataFormatted)
+              window.dispatchEvent(illumevent)
+              break
+            default:
+              console.log(`unexpedted topic: ${topic}`)
           }
+          console.log(dataFormatted)
         } catch (e) {
           console.log('JSON parse error.', e)
         }
@@ -101,7 +97,7 @@ new Vue({
         console.log('offline.')
       })
 
-      c.client && c.client.subscribe(c.mqttTopic, null, function (err, granted) { console.log(err) })
+      c.client && c.client.subscribe('sensor/#', null, function (err, granted) { console.log(err) })
     }
   }
 })
