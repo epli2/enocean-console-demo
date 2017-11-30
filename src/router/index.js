@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Weather from '@/components/Weather'
+import Temperature from '@/components/Temperature'
+import Humidity from '@/components/Humidity'
 import Illumination from '@/components/Illumination'
 
 Vue.use(Router)
@@ -9,8 +10,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Weather',
-      component: Weather
+      name: 'Temperature',
+      component: Temperature
+    },
+    {
+      path: '/Humidity/',
+      name: 'Humidity',
+      component: Humidity
     },
     {
       path: '/Illumination/',

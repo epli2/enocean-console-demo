@@ -9,7 +9,12 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <router-link class="nav-link" to="/" role="button">
-            🌡 温度・湿度
+            🌡 温度
+          </router-link>
+        </li>
+        <li class="nav-item active">
+          <router-link class="nav-link" to="/Humidity" role="button">
+            🌡 湿度
           </router-link>
         </li>
         <li class="nav-item active">
