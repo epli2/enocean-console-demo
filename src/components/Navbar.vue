@@ -14,7 +14,7 @@
         </li>
         <li class="nav-item active">
           <router-link class="nav-link" to="/Humidity" role="button">
-            🌡 湿度
+            💧 湿度
           </router-link>
         </li>
         <li class="nav-item active">
