@@ -25,6 +25,7 @@
 
 <script>
 import Chart from './Chart'
+import { getTimeStr } from '@/js/utils.js'
 
 export default {
   components: {
@@ -53,7 +54,7 @@ export default {
       this.minTemp = Math.min.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveTemp = Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
       this.chartData = {
-        labels: tempArray.map((o) => o.timestamp),
+        labels: tempArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: '温度',

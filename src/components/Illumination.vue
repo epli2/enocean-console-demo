@@ -25,6 +25,7 @@
 
 <script>
 import Chart from './Chart'
+import { getTimeStr } from '@/js/utils.js'
 
 export default {
   components: {
@@ -53,7 +54,7 @@ export default {
       this.minIllum = Math.min.apply(null, illumDataArray)
       this.aveIllum = Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumDataArray.length * 100) / 100
       this.chartData = {
-        labels: illumArray.map((o) => o.timestamp),
+        labels: illumArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: '照度',
