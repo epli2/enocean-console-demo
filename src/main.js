@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import mqtt from 'mqtt'
+import { startReceive } from './js/receive.js'
 
 Vue.config.productionTip = false
 
@@ -17,20 +18,21 @@ new Vue({
     mqtt
   },
   created () {
-    var date = new Date()
-    var timestamp = date.getTime()
-    var c = {
-      client: null,
-      clientId: this.city + '_clock_' + timestamp,
-      broker: 'ws://192.168.212.33:8080/mqtt',
-      mqttUser: 'james-kitchen',
-      mqttPass: 'webdino',
-      mqttTopic: 'sensor/002DAEE8/#',
-      tempTopic: 'sensor/04016897/Temperature',
-      humidTopic: 'sensor/04016897/Humidity',
-      illumTopic: 'sensor/04016777/Illumination'
-    }
-    this.mqttConnect(c)
+    // var date = new Date()
+    // var timestamp = date.getTime()
+    // var c = {
+    //   client: null,
+    //   clientId: this.city + '_clock_' + timestamp,
+    //   broker: 'ws://192.168.212.33:8080/mqtt',
+    //   mqttUser: 'james-kitchen',
+    //   mqttPass: 'webdino',
+    //   mqttTopic: 'sensor/002DAEE8/#',
+    //   tempTopic: 'sensor/04016897/Temperature',
+    //   humidTopic: 'sensor/04016897/Humidity',
+    //   illumTopic: 'sensor/04016777/Illumination'
+    // }
+    // this.mqttConnect(c)
+    startReceive()
   },
   methods: {
     mqttConnect (c) {
