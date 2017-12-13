@@ -50,12 +50,18 @@ export default {
     setHumidData () {
       let humidArray = JSON.parse(localStorage.getItem('humid'))
       let humidDataArray = humidArray.map((o) => o.data)
+      let humidAnomalyScoreArray = humidArray.map((o) => o.ret)
       this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.minHumid = Math.min.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveHumid = Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
       this.chartData = {
         labels: humidArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
+          {
+            label: 'anomaly score',
+            backgroundColor: '#FF0000',
+            data: humidAnomalyScoreArray
+          },
           {
             label: '湿度',
             backgroundColor: '#BAFF91',

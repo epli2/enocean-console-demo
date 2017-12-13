@@ -50,12 +50,18 @@ export default {
     setIllumData () {
       let illumArray = JSON.parse(localStorage.getItem('illum'))
       let illumDataArray = illumArray.map((o) => { return o.data })
+      let illumAnomalyScoreArray = illumArray.map((o) => o.ret)
       this.maxIllum = Math.max.apply(null, illumDataArray)
       this.minIllum = Math.min.apply(null, illumDataArray)
       this.aveIllum = Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumDataArray.length * 100) / 100
       this.chartData = {
         labels: illumArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
+          {
+            label: 'anomaly score',
+            backgroundColor: '#FF0000',
+            data: illumAnomalyScoreArray
+          },
           {
             label: '照度',
             backgroundColor: '#FFF02B',

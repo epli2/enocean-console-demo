@@ -50,12 +50,18 @@ export default {
     setWeatherData () {
       let tempArray = JSON.parse(localStorage.getItem('temp'))
       let tempDataArray = tempArray.map((o) => o.data)
+      let tempAnomalyScoreArray = tempArray.map((o) => o.ret)
       this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.minTemp = Math.min.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveTemp = Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
       this.chartData = {
         labels: tempArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
+          {
+            label: 'anomaly score',
+            backgroundColor: '#FF0000',
+            data: tempAnomalyScoreArray
+          },
           {
             label: '温度',
             backgroundColor: '#FF7257',
