@@ -59,11 +59,13 @@ export default {
         datasets: [
           {
             label: 'anomaly score',
+            yAxisID: 'y-axis-2',
             backgroundColor: '#FF0000',
             data: illumAnomalyScoreArray
           },
           {
             label: '照度',
+            yAxisID: 'y-axis-1',
             backgroundColor: '#FFF02B',
             data: illumDataArray
           }

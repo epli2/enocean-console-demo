@@ -59,11 +59,13 @@ export default {
         datasets: [
           {
             label: 'anomaly score',
+            yAxisID: 'y-axis-2',
             backgroundColor: '#FF0000',
             data: tempAnomalyScoreArray
           },
           {
             label: '温度',
+            yAxisID: 'y-axis-1',
             backgroundColor: '#FF7257',
             data: tempDataArray
           }

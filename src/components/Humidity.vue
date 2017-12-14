@@ -59,11 +59,13 @@ export default {
         datasets: [
           {
             label: 'anomaly score',
+            yAxisID: 'y-axis-2',
             backgroundColor: '#FF0000',
             data: humidAnomalyScoreArray
           },
           {
             label: '湿度',
+            yAxisID: 'y-axis-1',
             backgroundColor: '#BAFF91',
             data: humidDataArray
           }
