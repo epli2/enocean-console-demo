@@ -1,0 +1,126 @@
+<template>
+  <div>
+    <section class="row">
+      <div class="Chart col-6 col-sm-6">
+        <h3>温度</h3>
+        <div class="Chart">
+          <chart :chartData="tempChartData"></chart>
+        </div>
+      </div>
+      <div class="Chart col-6 col-sm-6">
+        <h3>湿度</h3>
+        <chart :chartData="humidChartData"></chart>
+      </div>
+    </section>
+    <section class="row">
+      <div class="Chart col-6 col-sm-6">
+        <h3>照度</h3>
+        <chart :chartData="illumChartData"></chart>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script>
+import Chart from './Chart'
+import { getTimeStr } from '@/js/utils.js'
+
+export default {
+  components: {
+    Chart
+  },
+  data () {
+    return {
+      tempChartData: {},
+      humidChartData: {},
+      illumChartData: {}
+    }
+  },
+  mounted () {
+    let self = this
+    self.setWeatherData()
+    self.setHumidData()
+    self.setIllumData()
+    window.addEventListener('tempupdate', function (e) {
+      self.setWeatherData()
+    })
+    window.addEventListener('humidupdate', function (e) {
+      self.setHumidData()
+    })
+    window.addEventListener('illumupdate', function (e) {
+      self.setIllumData()
+    })
+  },
+  methods: {
+    setWeatherData () {
+      let tempArray = JSON.parse(localStorage.getItem('temp'))
+      let tempDataArray = tempArray.map((o) => o.data)
+      let tempAnomalyScoreArray = tempArray.map((o) => o.ret)
+      this.tempChartData = {
+        labels: tempArray.map((o) => getTimeStr(new Date(o.timestamp))),
+        datasets: [
+          {
+            label: 'anomaly score',
+            yAxisID: 'y-axis-2',
+            backgroundColor: '#FF0000',
+            data: tempAnomalyScoreArray
+          },
+          {
+            label: '温度',
+            yAxisID: 'y-axis-1',
+            backgroundColor: '#FF7257',
+            data: tempDataArray
+          }
+        ]
+      }
+    },
+    setHumidData () {
+      let humidArray = JSON.parse(localStorage.getItem('humid'))
+      let humidDataArray = humidArray.map((o) => o.data)
+      let humidAnomalyScoreArray = humidArray.map((o) => o.ret)
+      this.humidChartData = {
+        labels: humidArray.map((o) => getTimeStr(new Date(o.timestamp))),
+        datasets: [
+          {
+            label: 'anomaly score',
+            backgroundColor: '#FF0000',
+            data: humidAnomalyScoreArray
+          },
+          {
+            label: '湿度',
+            backgroundColor: '#BAFF91',
+            data: humidDataArray
+          }
+        ]
+      }
+    },
+    setIllumData () {
+      let illumArray = JSON.parse(localStorage.getItem('illum'))
+      let illumDataArray = illumArray.map((o) => { return o.data })
+      let illumAnomalyScoreArray = illumArray.map((o) => o.ret)
+      this.illumChartData = {
+        labels: illumArray.map((o) => getTimeStr(new Date(o.timestamp))),
+        datasets: [
+          {
+            label: 'anomaly score',
+            backgroundColor: '#FF0000',
+            data: illumAnomalyScoreArray
+          },
+          {
+            label: '照度',
+            backgroundColor: '#FFF02B',
+            data: illumDataArray
+          }
+        ]
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.Chart {
+  padding: 1em;
+}
+</style>
+

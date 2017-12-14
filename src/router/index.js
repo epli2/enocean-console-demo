@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Temperature from '@/components/Temperature'
 import Humidity from '@/components/Humidity'
 import Illumination from '@/components/Illumination'
+import AllSensor from '@/components/AllSensor'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/Illumination/',
       name: 'Illumination',
       component: Illumination
+    },
+    {
+      path: '/all/',
+      name: 'all',
+      component: AllSensor
     }
   ]
 })
