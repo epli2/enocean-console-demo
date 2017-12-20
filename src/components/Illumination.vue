@@ -4,17 +4,14 @@
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ maxIllum }}</h1>
         <h4>最高照度</h4>
-        <div class="text-muted">前日+4</div>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ minIllum }}</h1>
         <h4>最低照度</h4>
-        <span class="text-muted">前日-1</span>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ aveIllum }}</h1>
         <h4>平均照度</h4>
-        <span class="text-muted">前日±0</span>
       </div>
     </section>
     <div class="Chart">

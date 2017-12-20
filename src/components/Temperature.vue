@@ -4,17 +4,14 @@
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ maxTemp }}℃</h1>
         <h4>最高気温</h4>
-        <div class="text-muted">前日+0℃</div>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ minTemp }}℃</h1>
         <h4>最低気温</h4>
-        <span class="text-muted">前日±0℃</span>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ aveTemp }}℃</h1>
         <h4>平均気温</h4>
-        <span class="text-muted">前日±0℃</span>
       </div>
     </section>
     <div class="Chart">

@@ -4,17 +4,14 @@
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ maxHumid }}%</h1>
         <h4>最高湿度</h4>
-        <div class="text-muted">前日±0%</div>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ minHumid }}%</h1>
         <h4>最低湿度</h4>
-        <span class="text-muted">前日±0%</span>
       </div>
       <div class="col-6 col-sm-4 placeholder">
         <h1>{{ aveHumid }}%</h1>
         <h4>平均湿度</h4>
-        <span class="text-muted">前日±0%</span>
       </div>
     </section>
     <div class="Chart">
