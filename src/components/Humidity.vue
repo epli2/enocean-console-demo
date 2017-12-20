@@ -2,20 +2,20 @@
   <div>
     <section class="row text-center placeholders">
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ maxHumid }}%</h1>
-        <h4>最高湿度</h4>
+        <h4>{{ maxHumid }}%</h4>
+        <h5>最高湿度</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ minHumid }}%</h1>
-        <h4>最低湿度</h4>
+        <h4>{{ minHumid }}%</h4>
+        <h5>最低湿度</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ aveHumid }}%</h1>
-        <h4>平均湿度</h4>
+        <h4>{{ aveHumid }}%</h4>
+        <h5>平均湿度</h5>
       </div>
     </section>
     <div class="Chart">
-      <chart :chartData="chartData"></chart>
+      <chart :chartData="chartData" height="320"></chart>
     </div>
   </div>
 </template>
@@ -75,6 +75,6 @@ export default {
 
 <style scoped>
 .placeholders {
-  padding-bottom: 3rem;
+  padding-bottom: 0.5rem;
 }
 </style>

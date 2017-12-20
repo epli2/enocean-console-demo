@@ -2,20 +2,20 @@
   <div>
     <section class="row text-center placeholders">
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ maxTemp }}℃</h1>
-        <h4>最高気温</h4>
+        <h4>{{ maxTemp }}℃</h4>
+        <h5>最高気温</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ minTemp }}℃</h1>
-        <h4>最低気温</h4>
+        <h4>{{ minTemp }}℃</h4>
+        <h5>最低気温</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ aveTemp }}℃</h1>
-        <h4>平均気温</h4>
+        <h4>{{ aveTemp }}℃</h4>
+        <h5>平均気温</h5>
       </div>
     </section>
     <div class="Chart">
-      <chart :chartData="chartData"></chart>
+      <chart :chartData="chartData" height="320"></chart>
     </div>
   </div>
 </template>
@@ -75,6 +75,6 @@ export default {
 
 <style scoped>
 .placeholders {
-  padding-bottom: 3rem;
+  padding-bottom: 0.5rem;
 }
 </style>

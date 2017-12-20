@@ -2,20 +2,17 @@
   <div>
     <section class="row">
       <div class="Chart col-6 col-sm-6">
-        <h3>温度</h3>
         <div class="Chart">
-          <chart :chartData="tempChartData"></chart>
+          <chart :chartData="tempChartData" height="200"></chart>
         </div>
       </div>
       <div class="Chart col-6 col-sm-6">
-        <h3>湿度</h3>
-        <chart :chartData="humidChartData"></chart>
+        <chart :chartData="humidChartData" height="200"></chart>
       </div>
     </section>
     <section class="row">
       <div class="Chart col-6 col-sm-6">
-        <h3>照度</h3>
-        <chart :chartData="illumChartData"></chart>
+        <chart :chartData="illumChartData" height="200"></chart>
       </div>
     </section>
   </div>
@@ -117,10 +114,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.Chart {
-  padding: 1em;
-}
-</style>
-

@@ -2,20 +2,20 @@
   <div>
     <section class="row text-center placeholders">
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ maxIllum }}</h1>
-        <h4>最高照度</h4>
+        <h4>{{ maxIllum }}</h4>
+        <h5>最高照度</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ minIllum }}</h1>
-        <h4>最低照度</h4>
+        <h4>{{ minIllum }}</h4>
+        <h5>最低照度</h5>
       </div>
       <div class="col-6 col-sm-4 placeholder">
-        <h1>{{ aveIllum }}</h1>
-        <h4>平均照度</h4>
+        <h4>{{ aveIllum }}</h4>
+        <h5>平均照度</h5>
       </div>
     </section>
     <div class="Chart">
-      <chart :chartData="chartData"></chart>
+      <chart :chartData="chartData" height="320"></chart>
     </div>
   </div>
 </template>
@@ -75,6 +75,6 @@ export default {
 
 <style scoped>
 .placeholders {
-  padding-bottom: 3rem;
+  padding-bottom: 0.5rem;
 }
 </style>
