@@ -1,12 +1,12 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
     <router-link class="navbar-brand" to="/">📈</router-link>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button> -->
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+    <div class="navbar-nav-scroll" id="navbarSupportedContent">
+      <ul class="navbar-nav">
         <li class="nav-item active">
           <router-link class="nav-link" to="/Temperature" role="button">
             🌡 温度
@@ -23,14 +23,14 @@
           </router-link>
         </li>
       </ul>
-      <ul class="navbar-nav my-2 my-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link">
-            現在 気温{{ nowTemp }}℃ / 湿度{{ nowHumid }}% / 照度{{ nowIllum }}
-          </a>
-        </li>
-      </ul>
     </div>
+    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+      <li class="nav-item active">
+        <a class="nav-link">
+          現在 気温{{ nowTemp }}℃ / 湿度{{ nowHumid }}% / 照度{{ nowIllum }}
+        </a>
+      </li>
+    </ul>
   </nav>
 </template>
 
