@@ -3,16 +3,16 @@
     <section class="row">
       <div class="Chart col-6 col-sm-6">
         <div class="Chart">
-          <chart :chartData="tempChartData" height="200"></chart>
+          <chart :chartData="tempChartData" :height="200"></chart>
         </div>
       </div>
       <div class="Chart col-6 col-sm-6">
-        <chart :chartData="humidChartData" height="200"></chart>
+        <chart :chartData="humidChartData" :height="200"></chart>
       </div>
     </section>
     <section class="row">
       <div class="Chart col-6 col-sm-6">
-        <chart :chartData="illumChartData" height="200"></chart>
+        <chart :chartData="illumChartData" :height="200"></chart>
       </div>
     </section>
   </div>

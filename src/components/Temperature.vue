@@ -15,7 +15,7 @@
       </div>
     </section>
     <div class="Chart">
-      <chart :chartData="chartData" height="320"></chart>
+      <chart :chartData="chartData" :height="320"></chart>
     </div>
   </div>
 </template>
