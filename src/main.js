@@ -23,7 +23,7 @@ new Vue({
     // var c = {
     //   client: null,
     //   clientId: this.city + '_clock_' + timestamp,
-    //   broker: 'ws://192.168.212.33:8080/mqtt',
+    //   broker: 'ws://192.168.212.21:8080/mqtt',
     //   mqttUser: 'james-kitchen',
     //   mqttPass: 'webdino',
     //   mqttTopic: 'sensor/002DAEE8/#',

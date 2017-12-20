@@ -11,6 +11,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'all',
+      component: AllSensor
+    },
+    {
+      path: '/Temperature',
       name: 'Temperature',
       component: Temperature
     },
@@ -23,11 +28,6 @@ export default new Router({
       path: '/Illumination/',
       name: 'Illumination',
       component: Illumination
-    },
-    {
-      path: '/all/',
-      name: 'all',
-      component: AllSensor
     }
   ]
 })
