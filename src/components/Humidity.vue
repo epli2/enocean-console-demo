@@ -15,14 +15,22 @@
       </div>
     </section>
     <div class="Chart">
-      <chart :chartData="chartData" :height="320"></chart>
+      <chart :chartData="chartData" :height="285"></chart>
+    </div>
+     <div class="buttons">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary">1時間</button>
+        <button v-on:click="setRange('day')" type="button" class="btn btn-secondary">1日</button>
+        <button v-on:click="setRange('month')" type="button" class="btn btn-secondary">1ヶ月</button>
+        <button v-on:click="setRange('all')" type="button" class="btn btn-secondary">全部</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Chart from './Chart'
-import { getTimeStr } from '@/js/utils.js'
+import { getTimeStr, isInRange } from '@/js/utils.js'
 
 export default {
   components: {
@@ -33,26 +41,39 @@ export default {
       maxHumid: Number,
       minHumid: Number,
       aveHumid: Number,
-      chartData: {}
+      chartData: {},
+      range: String
     }
   },
   mounted () {
     let self = this
+    self.range = 'month'
     self.setHumidData()
     window.addEventListener('humidupdate', function (e) {
       self.setHumidData()
     })
   },
   methods: {
+    setRange (range) {
+      this.range = range
+      this.setHumidData()
+    },
     setHumidData () {
       let humidArray = JSON.parse(localStorage.getItem('humid'))
-      let humidDataArray = humidArray.map((o) => o.data)
-      let humidAnomalyScoreArray = humidArray.map((o) => o.ret)
+      let humidArrayRanged = humidArray.filter((o) => {
+        if (isInRange(this.range, new Date(o.timestamp))) {
+          return true
+        } else {
+          return false
+        }
+      })
+      let humidDataArray = humidArrayRanged.map((o) => o.data)
+      let humidAnomalyScoreArray = humidArrayRanged.map((o) => o.ret)
       this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.minHumid = Math.min.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveHumid = Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
       this.chartData = {
-        labels: humidArray.map((o) => getTimeStr(new Date(o.timestamp))),
+        labels: humidArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
@@ -76,5 +97,8 @@ export default {
 <style scoped>
 .placeholders {
   padding-bottom: 0.5rem;
+}
+.buttons {
+  text-align: center;
 }
 </style>
