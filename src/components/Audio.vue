@@ -55,7 +55,7 @@ export default {
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
-            backgroundColor: '#FF0000',
+            backgroundColor: 'rgba(255, 0, 0, 0.5)',
             data: audioArray.map(o => o.ret)
           },
           {
