@@ -1,5 +1,5 @@
 # enocean-console-demo
-RZ/G1ボード等でのデモンストレーション用アプリケーションです
+RZ/G1ボード等でのデモンストレーション用アプリケーションです  
 サーバは別のrepositoryにあります -> https://github.com/epli2/enocean-console-demo-server
 
 ## インストール
