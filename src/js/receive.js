@@ -22,6 +22,17 @@ function startReceive () {
     console.log(data)
     storeData(data)
   })
+  socket.on('audio', function (data) {
+    console.log(data)
+    let jsondata = JSON.parse(data)
+    let dataFormatted = {
+      data: jsondata.volume,
+      timestamp: jsondata.timestamp,
+      ret: jsondata.ret
+    }
+    setLocalStorage('audio', dataFormatted)
+    window.dispatchEvent(new Event('audioupdate'))
+  })
 }
 
 function setLocalStorage (dataType, dataFormatted) {

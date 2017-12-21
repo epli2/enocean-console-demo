@@ -14,6 +14,9 @@
       <div class="Chart col-6 col-sm-6">
         <chart :chartData="illumChartData" :height="200"></chart>
       </div>
+      <div class="Chart col-6 col-sm-6">
+        <chart :chartData="audioChartData" :height="200"></chart>
+      </div>
     </section>
   </div>
 </template>
@@ -30,7 +33,8 @@ export default {
     return {
       tempChartData: {},
       humidChartData: {},
-      illumChartData: {}
+      illumChartData: {},
+      audioChartData: {}
     }
   },
   mounted () {
@@ -38,6 +42,7 @@ export default {
     self.setWeatherData()
     self.setHumidData()
     self.setIllumData()
+    self.setAudioData()
     window.addEventListener('tempupdate', function (e) {
       self.setWeatherData()
     })
@@ -46,6 +51,9 @@ export default {
     })
     window.addEventListener('illumupdate', function (e) {
       self.setIllumData()
+    })
+    window.addEventListener('audioupdate', function (e) {
+      self.setAudioData()
     })
   },
   methods: {
@@ -111,6 +119,26 @@ export default {
             yAxisID: 'y-axis-1',
             backgroundColor: '#FFF02B',
             data: illumDataArray
+          }
+        ]
+      }
+    },
+    setAudioData () {
+      let audioArray = JSON.parse(localStorage.getItem('audio'))
+      this.audioChartData = {
+        labels: audioArray.map(o => getTimeStr(new Date(o.timestamp))),
+        datasets: [
+          {
+            label: 'anomaly score',
+            yAxisID: 'y-axis-2',
+            backgroundColor: '#FF0000',
+            data: audioArray.map(o => o.ret)
+          },
+          {
+            label: '音量',
+            yAxisID: 'y-axis-1',
+            backgroundColor: '#87CEFA',
+            data: audioArray.map((o) => o.data)
           }
         ]
       }

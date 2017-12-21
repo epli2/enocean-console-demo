@@ -22,6 +22,11 @@
             ☀ 照度
           </router-link>
         </li>
+         <li class="nav-item active">
+          <router-link class="nav-link" to="/Audio" role="button">
+            🎤 音
+          </router-link>
+        </li>
       </ul>
     </div>
     <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
