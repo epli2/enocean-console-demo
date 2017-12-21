@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="Chart">
-      <chart :chartData="chartData" :height="320"></chart>
+      <chart :chartData="chartData" :height="362"></chart>
     </div>
     <div class="buttons">
       <div class="btn-group" role="group" aria-label="Basic example">
