@@ -1,21 +1,20 @@
 # enocean-console-demo
+RZ/G1ボード等でのデモンストレーション用アプリケーションです
+サーバは別のrepositoryにあります -> https://github.com/epli2/enocean-console-demo-server
 
-> A book management system for laboratory
+## インストール
+### 依存関係のインストール
+`npm install`
 
-## Build Setup
+## 使用方法
+### ビルド
+`npm run build`  
+コマンドを実行すると`dist/`以下に`index.html`とjs, cssをビルドします
 
-``` bash
-# install dependencies
-npm install
+### ビルド後
+`cp -f dist/index.html "サーバのリポジトリをクローンしたパス"/enocean-console-demo-server/templates && cp -r -f dist/static "サーバのリポジトリをクローンしたパス"/enocean-console-demo-server/`  
+というふうにファイルをサーバのディレクトリの`templates/`以下に`index.html`を、`static/`に`js/`と`css/`をコピーしてください
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 開発用サーバの起動(localhost:8080でアクセス)
+`npm run dev`
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
