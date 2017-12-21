@@ -11,7 +11,9 @@ function startReceive () {
   //   path: '/api/socket'
   // })
   var namespace = '/api/socket'
-  var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace)
+  var socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace, {
+    transports: ['websocket', 'polling']
+  })
 
   socket.on('connect', function () {
     console.log('connected!')
