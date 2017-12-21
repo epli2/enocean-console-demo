@@ -2,6 +2,9 @@
 RZ/G1ボード等でのデモンストレーション用アプリケーションです  
 サーバは別のrepositoryにあります -> https://github.com/epli2/enocean-console-demo-server
 
+## 既知のバグ
+初回起動時に最初のデータを受け取るまで表示がおかしくなる
+
 ## インストール
 ### 依存関係のインストール
 `npm install`
