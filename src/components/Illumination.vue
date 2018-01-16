@@ -42,7 +42,7 @@ export default {
       maxIllum: 0,
       minIllum: 0,
       aveIllum: 0,
-      range: 'hour'
+      range: 'all'
     }
   },
   computed: {
@@ -76,7 +76,7 @@ export default {
     },
     setIllumData () {
       let illumArrayRanged = this.illumArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
-      let illumDataArray = illumArrayRanged.map((o) => { return o.data })
+      let illumDataArray = illumArrayRanged.map((o) => o.data)
       let illumAnomalyScoreArray = illumArrayRanged.map((o) => o.ret)
       this.maxIllum = Math.max.apply(null, illumDataArray)
       this.minIllum = Math.min.apply(null, illumDataArray)
