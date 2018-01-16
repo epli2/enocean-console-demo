@@ -11,7 +11,7 @@ function startReceive (store) {
     transports: ['websocket', 'polling']
   });
 
-  ['temperature', 'humidity', 'illumination'].forEach(p => {
+  ['temperature', 'humidity', 'illumination', 'audio'].forEach(p => {
     // eslint-disable-next-line
     $.ajax({
       type: 'GET',
