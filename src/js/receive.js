@@ -1,13 +1,9 @@
 import io from 'socket.io-client'
-export { setData }
+export { startReceive }
 
 const tempTopic = 'sensor/04016897/Temperature'
 const humidTopic = 'sensor/04016897/Humidity'
 const illumTopic = 'sensor/04016777/Illumination'
-
-function setData (store) {
-  startReceive(store)
-}
 
 function startReceive (store) {
   let namespace = '/api/socket'
