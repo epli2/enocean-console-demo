@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import mqtt from 'mqtt'
 import { setData } from './js/receive.js'
 
 Vue.config.productionTip = false
@@ -16,8 +15,7 @@ new Vue({
   store,
   template: '<App/>',
   components: {
-    App,
-    mqtt
+    App
   },
   created () {
     setData(store)
