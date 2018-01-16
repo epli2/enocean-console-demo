@@ -30,6 +30,8 @@
       </ul>
     </div>
     <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+      <button v-if="isDemoMode" v-on:click="switchDemoMode" type="button" class="btn btn-secondary">demo mode</button>
+      <button v-else type="button" v-on:click="switchDemoMode" class="btn btn-success">realtime mode</button>
       <li class="nav-item active">
         <a class="nav-link">
           現在 気温{{ nowTemp }}℃ / 湿度{{ nowHumid }}% / 照度{{ nowIllum }}
@@ -40,7 +42,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
@@ -63,12 +65,18 @@ export default {
       return this.illumArray[this.illumArray.length - 1].data
     },
     ...mapState([
+      'isDemoMode'
+    ]),
+    ...mapGetters([
       'tempArray',
       'humidArray',
       'illumArray'
     ])
   },
   methods: {
+    ...mapActions([
+      'switchDemoMode'
+    ])
   }
 }
 </script>

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr, isInRange } from '@/js/utils.js'
 
@@ -66,7 +66,7 @@ export default {
       }
       return this.setHumidData()
     },
-    ...mapState([
+    ...mapGetters([
       'humidArray'
     ])
   },

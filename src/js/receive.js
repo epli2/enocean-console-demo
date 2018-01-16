@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-export { startReceive }
+export { startReceive, startDemo }
 
 const tempTopic = 'sensor/04016897/Temperature'
 const humidTopic = 'sensor/04016897/Humidity'
@@ -18,7 +18,7 @@ function startReceive (store) {
 
   socket.on('data', function (data) {
     console.log(data)
-    storeData(store, JSON.parse(data))
+    storeData(store, JSON.parse(data), false)
   })
 
   socket.on('audio', function (data) {
@@ -33,7 +33,28 @@ function startReceive (store) {
   })
 }
 
-function storeData (store, data) {
+function startDemo (store) {
+  // eslint-disable-next-line
+  $.ajax({
+    type: 'GET',
+    url: 'static/js/demodata.json',
+    dataType: 'json'
+  }).done((msg) => {
+    msg.temperature.forEach(d => storeData(store, d, true))
+    msg.humidity.forEach(d => storeData(store, d, true))
+    msg.illumination.forEach(d => storeData(store, d, true))
+    msg.audio.forEach(d => {
+      let dataFormatted = {
+        data: d.volume,
+        timestamp: d.timestamp,
+        ret: d.ret
+      }
+      store.dispatch('pushData', { data: dataFormatted, dataType: 'demo-audio' })
+    })
+  })
+}
+
+function storeData (store, data, isDemo) {
   let dataFormatted = {
     sensor: data.topic,
     data: data.value,
@@ -41,15 +62,16 @@ function storeData (store, data) {
     ret: data.ret
   }
 
+  let isDemoString = isDemo ? 'demo-' : ''
   switch (data.topic) {
     case tempTopic:
-      store.dispatch('pushData', { data: dataFormatted, dataType: 'temp' })
+      store.dispatch('pushData', { data: dataFormatted, dataType: isDemoString + 'temp' })
       break
     case humidTopic:
-      store.dispatch('pushData', { data: dataFormatted, dataType: 'humid' })
+      store.dispatch('pushData', { data: dataFormatted, dataType: isDemoString + 'humid' })
       break
     case illumTopic:
-      store.dispatch('pushData', { data: dataFormatted, dataType: 'illum' })
+      store.dispatch('pushData', { data: dataFormatted, dataType: isDemoString + 'illum' })
       break
     default:
       console.log(`unexpedted topic: ${data.topic}`)

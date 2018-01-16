@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr } from '@/js/utils.js'
 
@@ -43,7 +43,7 @@ export default {
     audioChartData () {
       return this.setAudioData()
     },
-    ...mapState([
+    ...mapGetters([
       'tempArray',
       'humidArray',
       'illumArray',

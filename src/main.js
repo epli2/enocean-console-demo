@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import { startReceive } from './js/receive.js'
+import { startReceive, startDemo } from './js/receive.js'
 
 Vue.config.productionTip = false
 
@@ -19,5 +19,6 @@ new Vue({
   },
   created () {
     startReceive(store)
+    startDemo(store)
   }
 })
