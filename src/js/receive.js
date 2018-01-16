@@ -39,10 +39,11 @@ function startReceive (store) {
 }
 
 function startDemo (store) {
+  let demodataName = window.location.search === '' ? 'demodata.json' : window.location.search.slice(1)
   // eslint-disable-next-line
   $.ajax({
     type: 'GET',
-    url: 'static/js/demodata.json',
+    url: `static/js/${demodataName}`,
     dataType: 'json'
   }).done((msg) => {
     msg.temperature.forEach(d => storeData(store, d, true))
