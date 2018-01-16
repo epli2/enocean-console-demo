@@ -15,14 +15,6 @@ function getTimeStr (isotime) {
 }
 
 function isInRange (range, isotime) {
-  let isSameDate = function (timeA, timeB) {
-    if (timeA.getFullYear() === timeB.getFullYear() &&
-        timeA.getMonth() === timeB.getMonth() &&
-        timeA.getDate() === timeB.getDate()) {
-      return true
-    }
-    return false
-  }
   let nowTime = new Date()
   switch (range) {
     case '1min':
@@ -38,21 +30,19 @@ function isInRange (range, isotime) {
         return false
       }
     case 'hour':
-      if (isSameDate(isotime, nowTime) &&
-          isotime.getHours() === nowTime.getHours()) {
+      if ((nowTime - isotime) / 1000 <= 60 * 60) {
         return true
       } else {
         return false
       }
     case 'day':
-      if (isSameDate(isotime, nowTime)) {
+      if ((nowTime - isotime) / 1000 <= 60 * 60 * 24) {
         return true
       } else {
         return false
       }
     case 'month':
-      if (isotime.getFullYear() === nowTime.getFullYear() &&
-          isotime.getMonth() === nowTime.getMonth()) {
+      if ((nowTime - isotime) / 1000 <= 60 * 60 * 24 * 30) {
         return true
       } else {
         return false
