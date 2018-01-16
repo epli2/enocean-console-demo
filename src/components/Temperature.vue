@@ -75,13 +75,7 @@ export default {
       this.range = range
     },
     setTempData () {
-      let tempArrayRanged = this.tempArray.filter((o) => {
-        if (isInRange(this.range, new Date(o.timestamp))) {
-          return true
-        } else {
-          return false
-        }
-      })
+      let tempArrayRanged = this.tempArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
       let tempDataArray = tempArrayRanged.map((o) => o.data)
       let tempAnomalyScoreArray = tempArrayRanged.map((o) => o.ret)
       this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))

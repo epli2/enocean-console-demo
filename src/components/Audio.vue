@@ -58,13 +58,7 @@ export default {
       this.range = range
     },
     setAudioData () {
-      let audioArrayRanged = this.audioArray.filter((o) => {
-        if (isInRange(this.range, new Date(o.timestamp))) {
-          return true
-        } else {
-          return false
-        }
-      })
+      let audioArrayRanged = this.audioArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
       return {
         labels: audioArrayRanged.map(o => getTimeStr(new Date(o.timestamp))),
         datasets: [
