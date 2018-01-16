@@ -15,6 +15,13 @@ const state = {
   demoAudioArray: []
 }
 
+function pushSort (array, data) {
+  array.push(data)
+  array.sort((a, b) => {
+    return new Date(a.timestamp) - new Date(b.timestamp)
+  })
+}
+
 const mutations = {
   switchDemoMode () {
     state.isDemoMode = !state.isDemoMode
@@ -22,28 +29,28 @@ const mutations = {
   pushData (state, { data, dataType }) {
     switch (dataType) {
       case 'temp':
-        state.tempArray.push(data)
+        pushSort(state.tempArray, data)
         break
       case 'humid':
-        state.humidArray.push(data)
+        pushSort(state.humidArray, data)
         break
       case 'illum':
-        state.illumArray.push(data)
+        pushSort(state.illumArray, data)
         break
       case 'audio':
-        state.audioArray.push(data)
+        pushSort(state.audioArray, data)
         break
       case 'demo-temp':
-        state.demoTempArray.push(data)
+        pushSort(state.demoTempArray, data)
         break
       case 'demo-humid':
-        state.demoHumidArray.push(data)
+        pushSort(state.demoHumidArray, data)
         break
       case 'demo-illum':
-        state.demoIllumArray.push(data)
+        pushSort(state.demoIllumArray, data)
         break
       case 'demo-audio':
-        state.demoAudioArray.push(data)
+        pushSort(state.demoAudioArray, data)
         break
     }
   }

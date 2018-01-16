@@ -9,6 +9,17 @@ function startReceive (store) {
   let namespace = '/api/socket'
   let socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace, {
     transports: ['websocket', 'polling']
+  });
+
+  ['temperature', 'humidity', 'illumination'].forEach(p => {
+    // eslint-disable-next-line
+    $.ajax({
+      type: 'GET',
+      url: `http://localhost:5000/api/history/${p}/1000`,
+      dataType: 'json'
+    }).done((msg) => {
+      msg.data.forEach(d => storeData(store, d, false))
+    })
   })
 
   socket.on('connect', function () {
