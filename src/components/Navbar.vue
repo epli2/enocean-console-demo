@@ -40,36 +40,35 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  data () {
-    return {
-      nowTemp: Number,
-      nowHumid: Number,
-      nowIllum: Number
-    }
-  },
-  mounted () {
-    let self = this
-    self.setNowWeather()
-    window.addEventListener('tempupdate', function (e) {
-      self.setNowWeather()
-    })
-    window.addEventListener('humidupdate', function (e) {
-      self.setNowWeather()
-    })
-    window.addEventListener('illumupdate', function (e) {
-      self.setNowWeather()
-    })
+  computed: {
+    nowTemp () {
+      if (this.tempArray.length === 0) {
+        return 0
+      }
+      return Math.round(this.tempArray[this.tempArray.length - 1].data * 100) / 100
+    },
+    nowHumid () {
+      if (this.humidArray.length === 0) {
+        return 0
+      }
+      return Math.round(this.humidArray[this.humidArray.length - 1].data * 100) / 100
+    },
+    nowIllum () {
+      if (this.illumArray.length === 0) {
+        return 0
+      }
+      return this.illumArray[this.illumArray.length - 1].data
+    },
+    ...mapState([
+      'tempArray',
+      'humidArray',
+      'illumArray'
+    ])
   },
   methods: {
-    setNowWeather () {
-      let tempArray = JSON.parse(localStorage.getItem('temp'))
-      let humidArray = JSON.parse(localStorage.getItem('humid'))
-      let illumArray = JSON.parse(localStorage.getItem('illum'))
-      this.nowTemp = Math.round(tempArray[tempArray.length - 1].data * 100) / 100
-      this.nowHumid = Math.round(humidArray[humidArray.length - 1].data * 100) / 100
-      this.nowIllum = illumArray[illumArray.length - 1].data
-    }
   }
 }
 </script>

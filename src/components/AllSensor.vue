@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr } from '@/js/utils.js'
 
@@ -29,40 +30,32 @@ export default {
   components: {
     Chart
   },
-  data () {
-    return {
-      tempChartData: {},
-      humidChartData: {},
-      illumChartData: {},
-      audioChartData: {}
-    }
-  },
-  mounted () {
-    let self = this
-    self.setWeatherData()
-    self.setHumidData()
-    self.setIllumData()
-    self.setAudioData()
-    window.addEventListener('tempupdate', function (e) {
-      self.setWeatherData()
-    })
-    window.addEventListener('humidupdate', function (e) {
-      self.setHumidData()
-    })
-    window.addEventListener('illumupdate', function (e) {
-      self.setIllumData()
-    })
-    window.addEventListener('audioupdate', function (e) {
-      self.setAudioData()
-    })
+  computed: {
+    tempChartData () {
+      return this.setWeatherData()
+    },
+    humidChartData () {
+      return this.setHumidData()
+    },
+    illumChartData () {
+      return this.setIllumData()
+    },
+    audioChartData () {
+      return this.setAudioData()
+    },
+    ...mapState([
+      'tempArray',
+      'humidArray',
+      'illumArray',
+      'audioArray'
+    ])
   },
   methods: {
     setWeatherData () {
-      let tempArray = JSON.parse(localStorage.getItem('temp'))
-      let tempDataArray = tempArray.map((o) => o.data)
-      let tempAnomalyScoreArray = tempArray.map((o) => o.ret)
-      this.tempChartData = {
-        labels: tempArray.map((o) => getTimeStr(new Date(o.timestamp))),
+      let tempDataArray = this.tempArray.map((o) => o.data)
+      let tempAnomalyScoreArray = this.tempArray.map((o) => o.ret)
+      return {
+        labels: this.tempArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
@@ -80,11 +73,10 @@ export default {
       }
     },
     setHumidData () {
-      let humidArray = JSON.parse(localStorage.getItem('humid'))
-      let humidDataArray = humidArray.map((o) => o.data)
-      let humidAnomalyScoreArray = humidArray.map((o) => o.ret)
-      this.humidChartData = {
-        labels: humidArray.map((o) => getTimeStr(new Date(o.timestamp))),
+      let humidDataArray = this.humidArray.map((o) => o.data)
+      let humidAnomalyScoreArray = this.humidArray.map((o) => o.ret)
+      return {
+        labels: this.humidArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
@@ -102,11 +94,10 @@ export default {
       }
     },
     setIllumData () {
-      let illumArray = JSON.parse(localStorage.getItem('illum'))
-      let illumDataArray = illumArray.map((o) => { return o.data })
-      let illumAnomalyScoreArray = illumArray.map((o) => o.ret)
-      this.illumChartData = {
-        labels: illumArray.map((o) => getTimeStr(new Date(o.timestamp))),
+      let illumDataArray = this.illumArray.map((o) => { return o.data })
+      let illumAnomalyScoreArray = this.illumArray.map((o) => o.ret)
+      return {
+        labels: this.illumArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
@@ -124,21 +115,20 @@ export default {
       }
     },
     setAudioData () {
-      let audioArray = JSON.parse(localStorage.getItem('audio'))
-      this.audioChartData = {
-        labels: audioArray.map(o => getTimeStr(new Date(o.timestamp))),
+      return {
+        labels: this.audioArray.map(o => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: audioArray.map(o => o.ret)
+            data: this.audioArray.map(o => o.ret)
           },
           {
             label: '音量',
             yAxisID: 'y-axis-1',
             backgroundColor: '#87CEFA',
-            data: audioArray.map((o) => o.data)
+            data: this.audioArray.map((o) => o.data)
           }
         ]
       }

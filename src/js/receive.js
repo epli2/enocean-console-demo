@@ -1,17 +1,17 @@
 import io from 'socket.io-client'
-export { startReceive }
+export { setData }
 
 const tempTopic = 'sensor/04016897/Temperature'
 const humidTopic = 'sensor/04016897/Humidity'
 const illumTopic = 'sensor/04016777/Illumination'
 
-function startReceive () {
-  // let socket = io('http://localhost:5000', {
-  //   transports: ['websocket'],
-  //   path: '/api/socket'
-  // })
-  var namespace = '/api/socket'
-  var socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace, {
+function setData (store) {
+  startReceive(store)
+}
+
+function startReceive (store) {
+  let namespace = '/api/socket'
+  let socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace, {
     transports: ['websocket', 'polling']
   })
 
@@ -22,8 +22,9 @@ function startReceive () {
 
   socket.on('data', function (data) {
     console.log(data)
-    storeData(data)
+    storeData(store, JSON.parse(data))
   })
+
   socket.on('audio', function (data) {
     console.log(data)
     let jsondata = JSON.parse(data)
@@ -32,43 +33,29 @@ function startReceive () {
       timestamp: jsondata.timestamp,
       ret: jsondata.ret
     }
-    setLocalStorage('audio', dataFormatted)
-    window.dispatchEvent(new Event('audioupdate'))
+    store.dispatch('pushData', { data: dataFormatted, dataType: 'audio' })
   })
 }
 
-function setLocalStorage (dataType, dataFormatted) {
-  let dataArray = []
-  if (localStorage.getItem(dataType) !== null) {
-    dataArray = dataArray.concat(JSON.parse(localStorage.getItem(dataType)))
-  }
-  dataArray.push(dataFormatted)
-  localStorage.setItem(dataType, JSON.stringify(dataArray))
-}
-
-function storeData (data) {
-  let jsondata = JSON.parse(data)
+function storeData (store, data) {
   let dataFormatted = {
-    sensor: jsondata.topic,
-    data: jsondata.value,
-    timestamp: jsondata.timestamp,
-    ret: jsondata.ret
+    sensor: data.topic,
+    data: data.value,
+    timestamp: data.timestamp,
+    ret: data.ret
   }
 
-  switch (jsondata.topic) {
+  switch (data.topic) {
     case tempTopic:
-      setLocalStorage('temp', dataFormatted)
-      window.dispatchEvent(new Event('tempupdate'))
+      store.dispatch('pushData', { data: dataFormatted, dataType: 'temp' })
       break
     case humidTopic:
-      setLocalStorage('humid', dataFormatted)
-      window.dispatchEvent(new Event('humidupdate'))
+      store.dispatch('pushData', { data: dataFormatted, dataType: 'humid' })
       break
     case illumTopic:
-      setLocalStorage('illum', dataFormatted)
-      window.dispatchEvent(new Event('illumupdate'))
+      store.dispatch('pushData', { data: dataFormatted, dataType: 'illum' })
       break
     default:
-      console.log(`unexpedted topic: ${jsondata.topic}`)
+      console.log(`unexpedted topic: ${data.topic}`)
   }
 }

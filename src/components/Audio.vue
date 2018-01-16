@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr, isInRange } from '@/js/utils.js'
 
@@ -24,32 +25,47 @@ export default {
   },
   data () {
     return {
-      chartData: {},
-      range: String
+      range: 'all'
     }
   },
-  mounted () {
-    let self = this
-    self.range = 'month'
-    self.setAudioData()
-    window.addEventListener('audioupdate', function (e) {
-      self.setAudioData()
-    })
+  computed: {
+    chartData () {
+      // storeのデータが空のとき, 空のChartデータを返す
+      if (this.audioArray.length === 0) {
+        return {
+          datasets: [
+            {
+              label: 'anomaly score',
+              yAxisID: 'y-axis-2',
+              backgroundColor: 'rgba(255, 0, 0, 0.5)'
+            },
+            {
+              label: '音量',
+              yAxisID: 'y-axis-1',
+              backgroundColor: '#87CEFA'
+            }
+          ]
+        }
+      }
+      return this.setAudioData()
+    },
+    ...mapState([
+      'audioArray'
+    ])
   },
   methods: {
     setRange (range) {
       this.range = range
-      this.setAudioData()
     },
     setAudioData () {
-      let audioArray = JSON.parse(localStorage.getItem('audio')).filter((o) => {
+      let audioArray = this.audioArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
         } else {
           return false
         }
       })
-      this.chartData = {
+      return {
         labels: audioArray.map(o => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {

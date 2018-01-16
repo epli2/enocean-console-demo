@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr, isInRange } from '@/js/utils.js'
 
@@ -38,29 +39,43 @@ export default {
   },
   data () {
     return {
-      maxTemp: Number,
-      minTemp: Number,
-      aveTemp: Number,
-      chartData: {},
-      range: String
+      maxTemp: 0,
+      minTemp: 0,
+      aveTemp: 0,
+      range: 'all'
     }
   },
-  mounted () {
-    let self = this
-    self.range = 'month'
-    self.setWeatherData()
-    window.addEventListener('tempupdate', function (e) {
-      self.setWeatherData()
-    })
+  computed: {
+    chartData () {
+      // storeのデータが空のとき, 空のChartデータを返す
+      if (this.tempArray.length === 0) {
+        return {
+          datasets: [
+            {
+              label: 'anomaly score',
+              yAxisID: 'y-axis-2',
+              backgroundColor: 'rgba(255, 0, 0, 0.5)'
+            },
+            {
+              label: '温度',
+              yAxisID: 'y-axis-1',
+              backgroundColor: '#FF7257'
+            }
+          ]
+        }
+      }
+      return this.setWeatherData()
+    },
+    ...mapState([
+      'tempArray'
+    ])
   },
   methods: {
     setRange (range) {
       this.range = range
-      this.setWeatherData()
     },
     setWeatherData () {
-      let tempArray = JSON.parse(localStorage.getItem('temp'))
-      let tempArrayRanged = tempArray.filter((o) => {
+      let tempArrayRanged = this.tempArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
         } else {
@@ -72,7 +87,7 @@ export default {
       this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.minTemp = Math.min.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveTemp = Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
-      this.chartData = {
+      return {
         labels: tempArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {

@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr, isInRange } from '@/js/utils.js'
 
@@ -38,29 +39,43 @@ export default {
   },
   data () {
     return {
-      maxHumid: Number,
-      minHumid: Number,
-      aveHumid: Number,
-      chartData: {},
-      range: String
+      maxHumid: 0,
+      minHumid: 0,
+      aveHumid: 0,
+      range: 'all'
     }
   },
-  mounted () {
-    let self = this
-    self.range = 'month'
-    self.setHumidData()
-    window.addEventListener('humidupdate', function (e) {
-      self.setHumidData()
-    })
+  computed: {
+    chartData () {
+      // storeのデータが空のとき, 空のChartデータを返す
+      if (this.humidArray.length === 0) {
+        return {
+          datasets: [
+            {
+              label: 'anomaly score',
+              yAxisID: 'y-axis-2',
+              backgroundColor: 'rgba(255, 0, 0, 0.5)'
+            },
+            {
+              label: '湿度',
+              yAxisID: 'y-axis-1',
+              backgroundColor: '#BAFF91'
+            }
+          ]
+        }
+      }
+      return this.setHumidData()
+    },
+    ...mapState([
+      'humidArray'
+    ])
   },
   methods: {
     setRange (range) {
       this.range = range
-      this.setHumidData()
     },
     setHumidData () {
-      let humidArray = JSON.parse(localStorage.getItem('humid'))
-      let humidArrayRanged = humidArray.filter((o) => {
+      let humidArrayRanged = this.humidArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
         } else {
@@ -72,7 +87,7 @@ export default {
       this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.minHumid = Math.min.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
       this.aveHumid = Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
-      this.chartData = {
+      return {
         labels: humidArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {

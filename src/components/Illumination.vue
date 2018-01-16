@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Chart from './Chart'
 import { getTimeStr, isInRange } from '@/js/utils.js'
 
@@ -38,29 +39,43 @@ export default {
   },
   data () {
     return {
-      maxIllum: Number,
-      minIllum: Number,
-      aveIllum: Number,
-      chartData: {},
-      range: String
+      maxIllum: 0,
+      minIllum: 0,
+      aveIllum: 0,
+      range: 'hour'
     }
   },
-  mounted () {
-    let self = this
-    self.range = 'month'
-    self.setIllumData()
-    window.addEventListener('illumupdate', function (e) {
-      self.setIllumData()
-    })
+  computed: {
+    chartData () {
+      // storeのデータが空のとき, 空のChartデータを返す
+      if (this.illumArray.length === 0) {
+        return {
+          datasets: [
+            {
+              label: 'anomaly score',
+              yAxisID: 'y-axis-2',
+              backgroundColor: 'rgba(255, 0, 0, 0.5)'
+            },
+            {
+              label: '照度',
+              yAxisID: 'y-axis-1',
+              backgroundColor: '#FFF02B'
+            }
+          ]
+        }
+      }
+      return this.setIllumData()
+    },
+    ...mapState([
+      'illumArray'
+    ])
   },
   methods: {
     setRange (range) {
       this.range = range
-      this.setIllumData()
     },
     setIllumData () {
-      let illumArray = JSON.parse(localStorage.getItem('illum'))
-      let illumArrayRanged = illumArray.filter((o) => {
+      let illumArrayRanged = this.illumArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
         } else {
@@ -72,7 +87,7 @@ export default {
       this.maxIllum = Math.max.apply(null, illumDataArray)
       this.minIllum = Math.min.apply(null, illumDataArray)
       this.aveIllum = Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumArrayRanged.length * 100) / 100
-      this.chartData = {
+      return {
         labels: illumArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
