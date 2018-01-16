@@ -58,7 +58,7 @@ export default {
       this.range = range
     },
     setAudioData () {
-      let audioArray = this.audioArray.filter((o) => {
+      let audioArrayRanged = this.audioArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
         } else {
@@ -66,19 +66,19 @@ export default {
         }
       })
       return {
-        labels: audioArray.map(o => getTimeStr(new Date(o.timestamp))),
+        labels: audioArrayRanged.map(o => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: audioArray.map(o => o.ret)
+            data: audioArrayRanged.map(o => o.ret)
           },
           {
             label: '音量',
             yAxisID: 'y-axis-1',
             backgroundColor: '#87CEFA',
-            data: audioArray.map((o) => o.data)
+            data: audioArrayRanged.map((o) => o.data)
           }
         ]
       }
