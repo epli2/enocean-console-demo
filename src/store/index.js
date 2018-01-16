@@ -15,13 +15,6 @@ const state = {
   demoAudioArray: []
 }
 
-function pushSort (array, data) {
-  array.push(data)
-  array.sort((a, b) => {
-    return new Date(a.timestamp) - new Date(b.timestamp)
-  })
-}
-
 const mutations = {
   switchDemoMode () {
     state.isDemoMode = !state.isDemoMode
@@ -29,30 +22,39 @@ const mutations = {
   pushData (state, { data, dataType }) {
     switch (dataType) {
       case 'temp':
-        pushSort(state.tempArray, data)
+        state.tempArray.push(data)
         break
       case 'humid':
-        pushSort(state.humidArray, data)
+        state.humidArray.push(data)
         break
       case 'illum':
-        pushSort(state.illumArray, data)
+        state.illumArray.push(data)
         break
       case 'audio':
-        pushSort(state.audioArray, data)
+        state.audioArray.push(data)
         break
       case 'demo-temp':
-        pushSort(state.demoTempArray, data)
+        state.demoTempArray.push(data)
         break
       case 'demo-humid':
-        pushSort(state.demoHumidArray, data)
+        state.demoHumidArray.push(data)
         break
       case 'demo-illum':
-        pushSort(state.demoIllumArray, data)
+        state.demoIllumArray.push(data)
         break
       case 'demo-audio':
-        pushSort(state.demoAudioArray, data)
+        state.demoAudioArray.push(data)
         break
     }
+  },
+  sortData () {
+    [state.tempArray, state.humidArray, state.illumArray, state.audioArray,
+      state.demoTempArray, state.demoHumidArray, state.demoIllumArray, state.demoAudioArray]
+    .forEach((array) => {
+      array.sort((a, b) => {
+        return new Date(a.timestamp) - new Date(b.timestamp)
+      })
+    })
   }
 }
 
@@ -63,7 +65,8 @@ const actions = {
       data: data,
       dataType: dataType
     })
-  }
+  },
+  sortData: ({ commit }) => commit('sortData')
 }
 
 const getters = {

@@ -19,6 +19,7 @@ function startReceive (store) {
       dataType: 'json'
     }).done((msg) => {
       msg.data.forEach(d => storeData(store, d, false))
+      store.dispatch('sortData')
     })
   })
 
@@ -50,6 +51,7 @@ function startDemo (store) {
     msg.humidity.forEach(d => storeData(store, d, true))
     msg.illumination.forEach(d => storeData(store, d, true))
     msg.audio.forEach(d => storeData(store, d, true))
+    store.dispatch('sortData')
   })
 }
 
