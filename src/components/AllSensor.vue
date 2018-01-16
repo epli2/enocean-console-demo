@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     tempChartData () {
-      return this.setWeatherData()
+      return this.setTempData()
     },
     humidChartData () {
       return this.setHumidData()
@@ -51,7 +51,7 @@ export default {
     ])
   },
   methods: {
-    setWeatherData () {
+    setTempData () {
       let tempDataArray = this.tempArray.map((o) => o.data)
       let tempAnomalyScoreArray = this.tempArray.map((o) => o.ret)
       return {

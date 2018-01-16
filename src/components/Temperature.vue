@@ -64,7 +64,7 @@ export default {
           ]
         }
       }
-      return this.setWeatherData()
+      return this.setTempData()
     },
     ...mapState([
       'tempArray'
@@ -74,7 +74,7 @@ export default {
     setRange (range) {
       this.range = range
     },
-    setWeatherData () {
+    setTempData () {
       let tempArrayRanged = this.tempArray.filter((o) => {
         if (isInRange(this.range, new Date(o.timestamp))) {
           return true
