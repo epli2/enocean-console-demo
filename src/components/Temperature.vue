@@ -19,9 +19,9 @@
     </div>
     <div class="buttons">
       <div class="btn-group" role="group" aria-label="Basic example">
+        <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary">1分</button>
+        <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary">10分</button>
         <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary">1時間</button>
-        <button v-on:click="setRange('day')" type="button" class="btn btn-secondary">1日</button>
-        <button v-on:click="setRange('month')" type="button" class="btn btn-secondary">1ヶ月</button>
         <button v-on:click="setRange('all')" type="button" class="btn btn-secondary">全部</button>
       </div>
     </div>

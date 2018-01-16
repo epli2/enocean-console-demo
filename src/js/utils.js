@@ -25,6 +25,18 @@ function isInRange (range, isotime) {
   }
   let nowTime = new Date()
   switch (range) {
+    case '1min':
+      if ((nowTime - isotime) / 1000 <= 60) {
+        return true
+      } else {
+        return false
+      }
+    case '10min':
+      if ((nowTime - isotime) / 1000 <= 60 * 10) {
+        return true
+      } else {
+        return false
+      }
     case 'hour':
       if (isSameDate(isotime, nowTime) &&
           isotime.getHours() === nowTime.getHours()) {
