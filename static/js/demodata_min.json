@@ -1,0 +1,6 @@
+{
+  "temperature": [{"value": 27.0, "timestamp": "", "topic": "sensor/04016897/Temperature", "ret": 0.0}, {"value": 28.0, "timestamp": "", "topic": "sensor/04016897/Temperature", "ret": 0.0}],
+  "humidity": [{"value": 30.0, "timestamp": "", "topic": "sensor/04016897/Humidity", "ret": 0.0}, {"value": 31.0, "timestamp": "", "topic": "sensor/04016897/Humidity", "ret": 0.0}],
+  "illumination": [{"value": 200.0, "timestamp": "", "topic": "sensor/04016777/Illumination", "ret": 0.0}, {"value": 201.0, "timestamp": "", "topic": "sensor/04016777/Illumination", "ret": 0.0}],
+  "audio": [{"value": 80.0, "timestamp": "", "topic": "audio", "ret": 0.0}, {"value": 81.0, "timestamp": "", "topic": "audio", "ret": 0.0}]
+}
