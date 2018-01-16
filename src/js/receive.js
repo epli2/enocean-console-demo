@@ -34,13 +34,7 @@ function startReceive (store) {
 
   socket.on('audio', function (data) {
     console.log(data)
-    let jsondata = JSON.parse(data)
-    let dataFormatted = {
-      data: jsondata.volume,
-      timestamp: jsondata.timestamp,
-      ret: jsondata.ret
-    }
-    store.dispatch('pushData', { data: dataFormatted, dataType: 'audio' })
+    storeData(store, JSON.parse(data), false)
   })
 }
 
@@ -54,14 +48,7 @@ function startDemo (store) {
     msg.temperature.forEach(d => storeData(store, d, true))
     msg.humidity.forEach(d => storeData(store, d, true))
     msg.illumination.forEach(d => storeData(store, d, true))
-    msg.audio.forEach(d => {
-      let dataFormatted = {
-        data: d.volume,
-        timestamp: d.timestamp,
-        ret: d.ret
-      }
-      store.dispatch('pushData', { data: dataFormatted, dataType: 'demo-audio' })
-    })
+    msg.audio.forEach(d => storeData(store, d, true))
   })
 }
 
@@ -83,6 +70,9 @@ function storeData (store, data, isDemo) {
       break
     case illumTopic:
       store.dispatch('pushData', { data: dataFormatted, dataType: isDemoString + 'illum' })
+      break
+    case 'audio':
+      store.dispatch('pushData', { data: dataFormatted, dataType: isDemoString + 'audio' })
       break
     default:
       console.log(`unexpedted topic: ${data.topic}`)
