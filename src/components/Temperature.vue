@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="Chart">
-      <chart :chartData="chartData" :height="285"></chart>
+      <chart :chartData="chartData" :height="height"></chart>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   components: {
     Chart
   },
-  props: ['range'],
+  props: ['range', 'height'],
   computed: {
     chartData () {
       // storeのデータが空のとき, 空のChartデータを返す
