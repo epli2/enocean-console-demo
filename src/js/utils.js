@@ -17,35 +17,15 @@ function getTimeStr (isotime) {
 function isInRange (range, isotime, nowTime) {
   switch (range) {
     case '1min':
-      if ((nowTime - isotime) / 1000 <= 60) {
-        return true
-      } else {
-        return false
-      }
+      return (nowTime - isotime) / 1000 <= 60
     case '10min':
-      if ((nowTime - isotime) / 1000 <= 60 * 10) {
-        return true
-      } else {
-        return false
-      }
+      return (nowTime - isotime) / 1000 <= 60 * 10
     case 'hour':
-      if ((nowTime - isotime) / 1000 <= 60 * 60) {
-        return true
-      } else {
-        return false
-      }
+      return (nowTime - isotime) / 1000 <= 60 * 60
     case 'day':
-      if ((nowTime - isotime) / 1000 <= 60 * 60 * 24) {
-        return true
-      } else {
-        return false
-      }
+      return (nowTime - isotime) / 1000 <= 60 * 60 * 24
     case 'month':
-      if ((nowTime - isotime) / 1000 <= 60 * 60 * 24 * 30) {
-        return true
-      } else {
-        return false
-      }
+      return (nowTime - isotime) / 1000 <= 60 * 60 * 24 * 30
     case 'all':
       return true
   }
