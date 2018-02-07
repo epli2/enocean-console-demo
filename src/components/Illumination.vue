@@ -75,7 +75,7 @@ export default {
       this.range = range
     },
     setIllumData () {
-      let illumArrayRanged = this.illumArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
+      let illumArrayRanged = this.illumArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.illumArray[this.illumArray.length - 1].timestamp)))
       let illumDataArray = illumArrayRanged.map((o) => o.data)
       let illumAnomalyScoreArray = illumArrayRanged.map((o) => o.ret)
       this.maxIllum = Math.max.apply(null, illumDataArray)

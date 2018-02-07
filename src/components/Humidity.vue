@@ -75,7 +75,7 @@ export default {
       this.range = range
     },
     setHumidData () {
-      let humidArrayRanged = this.humidArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
+      let humidArrayRanged = this.humidArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.humidArray[this.humidArray.length - 1].timestamp)))
       let humidDataArray = humidArrayRanged.map((o) => o.data)
       let humidAnomalyScoreArray = humidArrayRanged.map((o) => o.ret)
       this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100))

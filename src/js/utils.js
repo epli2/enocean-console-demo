@@ -14,8 +14,7 @@ function getTimeStr (isotime) {
   return timestr
 }
 
-function isInRange (range, isotime) {
-  let nowTime = new Date()
+function isInRange (range, isotime, nowTime) {
   switch (range) {
     case '1min':
       if ((nowTime - isotime) / 1000 <= 60) {
