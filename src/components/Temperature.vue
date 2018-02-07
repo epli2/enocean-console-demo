@@ -1,29 +1,7 @@
 <template>
   <div>
-    <section class="row text-center placeholders">
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ maxTemp }}℃</h4>
-        <h5>最高気温</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ minTemp }}℃</h4>
-        <h5>最低気温</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ aveTemp }}℃</h4>
-        <h5>平均気温</h5>
-      </div>
-    </section>
     <div class="Chart">
       <chart :chartData="chartData" :height="285"></chart>
-    </div>
-    <div class="buttons">
-      <div class="btn-group" role="group">
-        <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '1min'}">1分</button>
-        <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '10min'}">10分</button>
-        <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'hour'}">1時間</button>
-        <button v-on:click="setRange('all')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'all'}">全部</button>
-      </div>
     </div>
   </div>
 </template>
@@ -37,14 +15,7 @@ export default {
   components: {
     Chart
   },
-  data () {
-    return {
-      maxTemp: 0,
-      minTemp: 0,
-      aveTemp: 0,
-      range: 'all'
-    }
-  },
+  props: ['range'],
   computed: {
     chartData () {
       // storeのデータが空のとき, 空のChartデータを返す
@@ -71,16 +42,14 @@ export default {
     ])
   },
   methods: {
-    setRange (range) {
-      this.range = range
-    },
     setTempData () {
       let tempArrayRanged = this.tempArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.tempArray[this.tempArray.length - 1].timestamp)))
       let tempDataArray = tempArrayRanged.map((o) => o.data)
-      let tempAnomalyScoreArray = tempArrayRanged.map((o) => o.ret)
-      this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100))
-      this.minTemp = Math.min.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100))
-      this.aveTemp = Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
+      this.$emit('calculated', {
+        max: Math.max.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100)),
+        min: Math.min.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100)),
+        ave: Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
+      })
       return {
         labels: tempArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
@@ -88,7 +57,7 @@ export default {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: tempAnomalyScoreArray
+            data: tempArrayRanged.map((o) => o.ret)
           },
           {
             label: '温度',

@@ -1,29 +1,7 @@
 <template>
   <div>
-    <section class="row text-center placeholders">
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ maxHumid }}%</h4>
-        <h5>最高湿度</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ minHumid }}%</h4>
-        <h5>最低湿度</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ aveHumid }}%</h4>
-        <h5>平均湿度</h5>
-      </div>
-    </section>
     <div class="Chart">
       <chart :chartData="chartData" :height="285"></chart>
-    </div>
-     <div class="buttons">
-      <div class="btn-group" role="group">
-        <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '1min'}">1分</button>
-        <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '10min'}">10分</button>
-        <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'hour'}">1時間</button>
-        <button v-on:click="setRange('all')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'all'}">全部</button>
-      </div>
     </div>
   </div>
 </template>
@@ -37,14 +15,7 @@ export default {
   components: {
     Chart
   },
-  data () {
-    return {
-      maxHumid: 0,
-      minHumid: 0,
-      aveHumid: 0,
-      range: 'all'
-    }
-  },
+  props: ['range'],
   computed: {
     chartData () {
       // storeのデータが空のとき, 空のChartデータを返す
@@ -71,16 +42,14 @@ export default {
     ])
   },
   methods: {
-    setRange (range) {
-      this.range = range
-    },
     setHumidData () {
       let humidArrayRanged = this.humidArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.humidArray[this.humidArray.length - 1].timestamp)))
       let humidDataArray = humidArrayRanged.map((o) => o.data)
-      let humidAnomalyScoreArray = humidArrayRanged.map((o) => o.ret)
-      this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100))
-      this.minHumid = Math.min.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100))
-      this.aveHumid = Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
+      this.$emit('calculated', {
+        max: Math.max.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100)),
+        min: Math.min.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100)),
+        ave: Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
+      })
       return {
         labels: humidArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
@@ -88,7 +57,7 @@ export default {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: humidAnomalyScoreArray
+            data: humidArrayRanged.map((o) => o.ret)
           },
           {
             label: '湿度',

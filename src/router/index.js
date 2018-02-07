@@ -5,6 +5,7 @@ import Humidity from '@/components/Humidity'
 import Illumination from '@/components/Illumination'
 import Audio from '@/components/Audio'
 import AllSensor from '@/components/AllSensor'
+import SingleSensor from '@/components/SingleSensor'
 
 Vue.use(Router)
 
@@ -16,24 +17,30 @@ export default new Router({
       component: AllSensor
     },
     {
-      path: '/Temperature',
-      name: 'Temperature',
-      component: Temperature
-    },
-    {
-      path: '/Humidity/',
-      name: 'Humidity',
-      component: Humidity
-    },
-    {
-      path: '/Illumination/',
-      name: 'Illumination',
-      component: Illumination
-    },
-    {
-      path: '/Audio/',
-      name: 'Audio',
-      component: Audio
+      path: '/single',
+      component: SingleSensor,
+      children: [
+        {
+          path: 'temperature',
+          name: 'Temperature',
+          component: Temperature
+        },
+        {
+          path: 'humidity',
+          name: 'Humidity',
+          component: Humidity
+        },
+        {
+          path: 'illumination',
+          name: 'Illumination',
+          component: Illumination
+        },
+        {
+          path: 'audio',
+          name: 'Audio',
+          component: Audio
+        }
+      ]
     }
   ]
 })

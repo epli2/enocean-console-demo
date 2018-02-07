@@ -1,29 +1,7 @@
 <template>
   <div>
-    <section class="row text-center placeholders">
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ maxIllum }}</h4>
-        <h5>最高照度</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ minIllum }}</h4>
-        <h5>最低照度</h5>
-      </div>
-      <div class="col-6 col-sm-4 placeholder">
-        <h4>{{ aveIllum }}</h4>
-        <h5>平均照度</h5>
-      </div>
-    </section>
     <div class="Chart">
       <chart :chartData="chartData" :height="285"></chart>
-    </div>
-    <div class="buttons">
-      <div class="btn-group" role="group">
-        <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '1min'}">1分</button>
-        <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '10min'}">10分</button>
-        <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'hour'}">1時間</button>
-        <button v-on:click="setRange('all')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'all'}">全部</button>
-      </div>
     </div>
   </div>
 </template>
@@ -37,14 +15,7 @@ export default {
   components: {
     Chart
   },
-  data () {
-    return {
-      maxIllum: 0,
-      minIllum: 0,
-      aveIllum: 0,
-      range: 'all'
-    }
-  },
+  props: ['range'],
   computed: {
     chartData () {
       // storeのデータが空のとき, 空のChartデータを返す
@@ -71,16 +42,14 @@ export default {
     ])
   },
   methods: {
-    setRange (range) {
-      this.range = range
-    },
     setIllumData () {
       let illumArrayRanged = this.illumArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.illumArray[this.illumArray.length - 1].timestamp)))
       let illumDataArray = illumArrayRanged.map((o) => o.data)
-      let illumAnomalyScoreArray = illumArrayRanged.map((o) => o.ret)
-      this.maxIllum = Math.max.apply(null, illumDataArray)
-      this.minIllum = Math.min.apply(null, illumDataArray)
-      this.aveIllum = Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumArrayRanged.length * 100) / 100
+      this.$emit('calculated', {
+        max: Math.max.apply(null, illumDataArray),
+        min: Math.min.apply(null, illumDataArray),
+        ave: Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumArrayRanged.length * 100) / 100
+      })
       return {
         labels: illumArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
@@ -88,7 +57,7 @@ export default {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: illumAnomalyScoreArray
+            data: illumArrayRanged.map((o) => o.ret)
           },
           {
             label: '照度',

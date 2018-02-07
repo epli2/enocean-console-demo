@@ -1,15 +1,7 @@
 <template>
   <div>
     <div class="Chart">
-      <chart :chartData="chartData" :height="362"></chart>
-    </div>
-    <div class="buttons">
-      <div class="btn-group" role="group">
-        <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '1min'}">1分</button>
-        <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary" v-bind:class="{active: range === '10min'}">10分</button>
-        <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'hour'}">1時間</button>
-        <button v-on:click="setRange('all')" type="button" class="btn btn-secondary" v-bind:class="{active: range === 'all'}">全部</button>
-      </div>
+      <chart :chartData="chartData" :height="285"></chart>
     </div>
   </div>
 </template>
@@ -23,11 +15,7 @@ export default {
   components: {
     Chart
   },
-  data () {
-    return {
-      range: 'all'
-    }
-  },
+  props: ['range'],
   computed: {
     chartData () {
       // storeのデータが空のとき, 空のChartデータを返す
@@ -54,11 +42,14 @@ export default {
     ])
   },
   methods: {
-    setRange (range) {
-      this.range = range
-    },
     setAudioData () {
       let audioArrayRanged = this.audioArray.filter((o) => isInRange(this.range, new Date(o.timestamp), new Date(this.audioArray[this.audioArray.length - 1].timestamp)))
+      let audioDataArray = audioArrayRanged.map((o) => o.data)
+      this.$emit('calculated', {
+        max: Math.max.apply(null, audioDataArray),
+        min: Math.min.apply(null, audioDataArray),
+        ave: Math.round(audioDataArray.reduce((sum, value) => sum + value) / audioArrayRanged.length * 100) / 100
+      })
       return {
         labels: audioArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
@@ -72,7 +63,7 @@ export default {
             label: '音量',
             yAxisID: 'y-axis-1',
             backgroundColor: '#87CEFA',
-            data: audioArrayRanged.map((o) => o.data)
+            data: audioDataArray
           }
         ]
       }

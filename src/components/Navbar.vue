@@ -8,22 +8,22 @@
     <div class="navbar-nav-scroll" id="navbarSupportedContent">
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <router-link class="nav-link" to="/Temperature" role="button">
+          <router-link class="nav-link" to="/single/temperature" role="button">
             🌡 温度
           </router-link>
         </li>
         <li class="nav-item active">
-          <router-link class="nav-link" to="/Humidity" role="button">
+          <router-link class="nav-link" to="/single/humidity" role="button">
             💧 湿度
           </router-link>
         </li>
         <li class="nav-item active">
-          <router-link class="nav-link" to="/Illumination" role="button">
+          <router-link class="nav-link" to="/single/illumination" role="button">
             ☀ 照度
           </router-link>
         </li>
          <li class="nav-item active">
-          <router-link class="nav-link" to="/Audio" role="button">
+          <router-link class="nav-link" to="/single/audio" role="button">
             🎤 音
           </router-link>
         </li>
