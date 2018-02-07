@@ -78,8 +78,8 @@ export default {
       let tempArrayRanged = this.tempArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
       let tempDataArray = tempArrayRanged.map((o) => o.data)
       let tempAnomalyScoreArray = tempArrayRanged.map((o) => o.ret)
-      this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
-      this.minTemp = Math.min.apply(null, tempDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.maxTemp = Math.max.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100))
+      this.minTemp = Math.min.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100))
       this.aveTemp = Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
       return {
         labels: tempArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),

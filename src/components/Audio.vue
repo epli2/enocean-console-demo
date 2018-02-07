@@ -60,13 +60,13 @@ export default {
     setAudioData () {
       let audioArrayRanged = this.audioArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
       return {
-        labels: audioArrayRanged.map(o => getTimeStr(new Date(o.timestamp))),
+        labels: audioArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: audioArrayRanged.map(o => o.ret)
+            data: audioArrayRanged.map((o) => o.ret)
           },
           {
             label: '音量',

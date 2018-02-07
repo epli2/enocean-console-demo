@@ -78,8 +78,8 @@ export default {
       let humidArrayRanged = this.humidArray.filter((o) => isInRange(this.range, new Date(o.timestamp)))
       let humidDataArray = humidArrayRanged.map((o) => o.data)
       let humidAnomalyScoreArray = humidArrayRanged.map((o) => o.ret)
-      this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
-      this.minHumid = Math.min.apply(null, humidDataArray.map((v) => { return Math.round(v * 100) / 100 }))
+      this.maxHumid = Math.max.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100))
+      this.minHumid = Math.min.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100))
       this.aveHumid = Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
       return {
         labels: humidArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),

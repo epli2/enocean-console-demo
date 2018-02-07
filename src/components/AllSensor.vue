@@ -116,13 +116,13 @@ export default {
     },
     setAudioData () {
       return {
-        labels: this.audioArray.map(o => getTimeStr(new Date(o.timestamp))),
+        labels: this.audioArray.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: this.audioArray.map(o => o.ret)
+            data: this.audioArray.map((o) => o.ret)
           },
           {
             label: '音量',
