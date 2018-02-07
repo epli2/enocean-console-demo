@@ -47,11 +47,36 @@ function startDemo (store) {
     url: `static/js/${demodataName}`,
     dataType: 'json'
   }).done((msg) => {
-    msg.temperature.forEach(d => storeData(store, d, true))
-    msg.humidity.forEach(d => storeData(store, d, true))
-    msg.illumination.forEach(d => storeData(store, d, true))
-    msg.audio.forEach(d => storeData(store, d, true))
+    // JSONファイルからデータを10件読んで配列に追加
+    msg.temperature.slice(msg.temperature.length - 11, msg.temperature.length - 1).forEach(d => storeData(store, d, true))
+    msg.humidity.slice(msg.humidity.length - 11, msg.humidity.length - 1).forEach(d => storeData(store, d, true))
+    msg.illumination.slice(msg.illumination.length - 11, msg.illumination.length - 1).forEach(d => storeData(store, d, true))
+    msg.audio.slice(msg.audio.length - 11, msg.audio.length - 1).forEach(d => storeData(store, d, true))
     store.dispatch('sortData')
+
+    // 残りのデータ
+    let restTemps = msg.temperature.slice(0, msg.temperature.length - 11)
+    let restHumids = msg.humidity.slice(0, msg.humidity.length - 11)
+    let restIllums = msg.illumination.slice(0, msg.illumination.length - 11)
+    let restAudios = msg.audio.slice(0, msg.audio.length - 11)
+
+    // 気温, 湿度, 照度のデータを10秒ごとに追加
+    setInterval(() => {
+      if (restTemps.length <= 0 || restHumids.length <= 0 || restIllums.length <= 0) {
+        return
+      }
+      storeData(store, restTemps.pop(), true)
+      storeData(store, restHumids.pop(), true)
+      storeData(store, restIllums.pop(), true)
+    }, 10000)
+
+    // 音声のデータを1秒ごとに追加
+    setInterval(() => {
+      if (restAudios.length <= 0) {
+        return
+      }
+      storeData(store, restAudios.pop(), true)
+    }, 1000)
   })
 }
 
