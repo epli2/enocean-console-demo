@@ -25,6 +25,9 @@ export default {
           // grid line settings
           gridLines: {
             drawOnChartArea: false // only want the grid lines for one axis to show up
+          },
+          ticks: {
+            callback: (v) => v.toExponential(1)
           }
         }]
       }
