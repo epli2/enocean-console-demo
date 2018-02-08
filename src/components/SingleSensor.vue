@@ -14,7 +14,7 @@
         <h5>平均{{ typestr }}</h5>
       </div>
     </section>
-    <router-view :range="range" :height="285" v-on:calculated="apply"></router-view>
+    <router-view :range="range" :timeUnit="timeUnit" :height="285" v-on:calculated="apply"></router-view>
     <div class="buttons">
       <div class="btn-group" role="group">
         <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" :class="{ active: range === '1min' }">1分</button>
@@ -59,6 +59,18 @@ export default {
           return '照度'
         case '/single/audio':
           return '音量'
+      }
+    },
+    timeUnit () {
+      switch (this.range) {
+        case '1min':
+          return 'second'
+        case '10min':
+          return 'minute'
+        case 'hour':
+          return 'minute'
+        case 'all':
+          return 'minute'
       }
     }
   },
