@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="Chart">
-      <chart :chartData="chartData" :timeUnit="timeUnit" :height="height"></chart>
+      <chart :chartData="chartData" :timeUnit="timeUnit" :xAxesMax="xAxesMax" :xAxesMin="xAxesMin" :height="height"></chart>
     </div>
   </div>
 </template>
@@ -36,6 +36,23 @@ export default {
         }
       }
       return this.setIllumData()
+    },
+    xAxesMax () {
+      return this.range === 'all' ? null : new Date(this.illumArray[this.illumArray.length - 1].timestamp)
+    },
+    xAxesMin () {
+      let now = new Date(this.illumArray[this.illumArray.length - 1].timestamp)
+      let elapsedsec = (now - new Date(this.illumArray[0].timestamp)) / 1000
+      switch (this.range) {
+        case '1min':
+          return elapsedsec < 60 ? new Date(now.setMinutes(now.getMinutes() - 1)) : null
+        case '10min':
+          return elapsedsec < 60 * 10 ? new Date(now.setMinutes(now.getMinutes() - 10)) : null
+        case 'hour':
+          return elapsedsec < 60 * 60 ? new Date(now.setHours(now.getHours() - 1)) : null
+        case 'all':
+          return null
+      }
     },
     ...mapGetters([
       'illumArray'

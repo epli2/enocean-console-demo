@@ -6,10 +6,26 @@ export default {
   mixins: [mixins.reactiveProp],
   props: {
     chartData: Object,
-    timeUnit: String
+    timeUnit: String,
+    xAxesMax: Date,
+    xAxesMin: Date
   },
   watch: {
     'timeUnit': {
+      handler (newOption, oldOption) {
+        this.$data._chart.destroy()
+        this.renderChart(this.chartData, this.options)
+      },
+      deep: true
+    },
+    'xAxesMax': {
+      handler (newOption, oldOption) {
+        this.$data._chart.destroy()
+        this.renderChart(this.chartData, this.options)
+      },
+      deep: true
+    },
+    'xAxesMin': {
       handler (newOption, oldOption) {
         this.$data._chart.destroy()
         this.renderChart(this.chartData, this.options)
@@ -25,8 +41,9 @@ export default {
         scales: {
           xAxes: [{
             type: 'time',
-            distribution: 'series',
             time: {
+              max: this.xAxesMax,
+              min: this.xAxesMin,
               unit: this.timeUnit
             }
           }],
