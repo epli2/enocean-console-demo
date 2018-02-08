@@ -2,27 +2,27 @@
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="navbar-nav-scroll" id="navbarSupportedContent">
       <ul class="navbar-nav">
-        <li class="nav-item active">
+        <li class="nav-item" :class="{ active: this.$route.path === '/' }">
           <router-link class="nav-link" to="/" role="button">
             📈 All
           </router-link>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item" :class="{ active: this.$route.path === '/single/temperature' }">
           <router-link class="nav-link" to="/single/temperature" role="button">
             🌡 温度
           </router-link>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item" :class="{ active: this.$route.path === '/single/humidity' }">
           <router-link class="nav-link" to="/single/humidity" role="button">
             💧 湿度
           </router-link>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item" :class="{ active: this.$route.path === '/single/illumination' }">
           <router-link class="nav-link" to="/single/illumination" role="button">
             ☀ 照度
           </router-link>
         </li>
-         <li class="nav-item active">
+         <li class="nav-item" :class="{ active: this.$route.path === '/single/audio' }">
           <router-link class="nav-link" to="/single/audio" role="button">
             🎤 音
           </router-link>
