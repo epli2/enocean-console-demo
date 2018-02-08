@@ -50,6 +50,12 @@ export default {
           return elapsedsec < 60 * 10 ? new Date(now.setMinutes(now.getMinutes() - 10)) : null
         case 'hour':
           return elapsedsec < 60 * 60 ? new Date(now.setHours(now.getHours() - 1)) : null
+        case 'day':
+          return elapsedsec < 60 * 60 * 24 ? new Date(now.setHours(now.getHours() - 24)) : null
+        case 'week':
+          return elapsedsec < 60 * 60 * 24 * 7 ? new Date(now.setDate(now.getDate() - 7)) : null
+        case 'month':
+          return elapsedsec < 60 * 60 * 24 * 30 ? new Date(now.setDate(now.getDate() - 30)) : null
         case 'all':
           return null
       }

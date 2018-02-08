@@ -20,6 +20,9 @@
         <button v-on:click="setRange('1min')" type="button" class="btn btn-secondary" :class="{ active: range === '1min' }">1分</button>
         <button v-on:click="setRange('10min')" type="button" class="btn btn-secondary" :class="{ active: range === '10min' }">10分</button>
         <button v-on:click="setRange('hour')" type="button" class="btn btn-secondary" :class="{ active: range === 'hour' }">1時間</button>
+        <button v-on:click="setRange('day')" type="button" class="btn btn-secondary" :class="{ active: range === 'day' }">1日</button>
+        <button v-on:click="setRange('week')" type="button" class="btn btn-secondary" :class="{ active: range === 'week' }">1週間</button>
+        <button v-on:click="setRange('month')" type="button" class="btn btn-secondary" :class="{ active: range === 'month' }">1ヶ月</button>
         <button v-on:click="setRange('all')" type="button" class="btn btn-secondary" :class="{ active: range === 'all' }">全部</button>
       </div>
     </div>
@@ -69,6 +72,12 @@ export default {
           return 'minute'
         case 'hour':
           return 'minute'
+        case 'day':
+          return 'hour'
+        case 'week':
+          return 'day'
+        case 'month':
+          return 'day'
         case 'all':
           return 'minute'
       }
