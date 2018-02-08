@@ -38,9 +38,15 @@ export default {
       return this.setHumidData()
     },
     xAxesMax () {
+      if (this.humidArray.length === 0) {
+        return null
+      }
       return this.range === 'all' ? null : new Date(this.humidArray[this.humidArray.length - 1].timestamp)
     },
     xAxesMin () {
+      if (this.humidArray.length === 0) {
+        return null
+      }
       return getxAxesMin(this.humidArray, this.range)
     },
     ...mapGetters([

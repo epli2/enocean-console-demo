@@ -38,9 +38,15 @@ export default {
       return this.setIllumData()
     },
     xAxesMax () {
+      if (this.illumArray.length === 0) {
+        return null
+      }
       return this.range === 'all' ? null : new Date(this.illumArray[this.illumArray.length - 1].timestamp)
     },
     xAxesMin () {
+      if (this.illumArray.length === 0) {
+        return null
+      }
       return getxAxesMin(this.illumArray, this.range)
     },
     ...mapGetters([

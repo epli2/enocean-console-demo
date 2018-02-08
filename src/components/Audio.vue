@@ -38,9 +38,15 @@ export default {
       return this.setAudioData()
     },
     xAxesMax () {
+      if (this.audioArray.length === 0) {
+        return null
+      }
       return this.range === 'all' ? null : new Date(this.audioArray[this.audioArray.length - 1].timestamp)
     },
     xAxesMin () {
+      if (this.audioArray.length === 0) {
+        return null
+      }
       return getxAxesMin(this.audioArray, this.range)
     },
     ...mapGetters([

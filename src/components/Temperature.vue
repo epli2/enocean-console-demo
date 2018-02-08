@@ -38,9 +38,15 @@ export default {
       return this.setTempData()
     },
     xAxesMax () {
+      if (this.tempArray.length === 0) {
+        return null
+      }
       return this.range === 'all' ? null : new Date(this.tempArray[this.tempArray.length - 1].timestamp)
     },
     xAxesMin () {
+      if (this.tempArray.length === 0) {
+        return null
+      }
       return getxAxesMin(this.tempArray, this.range)
     },
     ...mapGetters([
