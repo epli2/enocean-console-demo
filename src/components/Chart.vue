@@ -48,7 +48,20 @@ export default {
               callback: (v) => v.toExponential(1)
             }
           }]
-        }
+        },
+        elements: {
+          line: {
+            tension: 0 // 軽量化のためベジェ曲線を無効にする
+          }
+        },
+        // 軽量化のためアニメーションを無効にする
+        animation: {
+          duration: 0
+        },
+        hover: {
+          animationDuration: 0
+        },
+        responsiveAnimationDuration: 0
       }
     }
   },
