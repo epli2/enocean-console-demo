@@ -1,4 +1,4 @@
-export { isInRange }
+export { isInRange, getxAxesMin }
 
 function isInRange (range, isotime, nowTime) {
   switch (range) {
@@ -16,5 +16,26 @@ function isInRange (range, isotime, nowTime) {
       return (nowTime - isotime) / 1000 <= 60 * 60 * 24 * 30
     case 'all':
       return true
+  }
+}
+
+function getxAxesMin (dataArray, range) {
+  let now = new Date(dataArray[dataArray.length - 1].timestamp)
+  let elapsedsec = (now - new Date(dataArray[0].timestamp)) / 1000
+  switch (range) {
+    case '1min':
+      return elapsedsec < 60 ? new Date(now.setMinutes(now.getMinutes() - 1)) : null
+    case '10min':
+      return elapsedsec < 60 * 10 ? new Date(now.setMinutes(now.getMinutes() - 10)) : null
+    case 'hour':
+      return elapsedsec < 60 * 60 ? new Date(now.setHours(now.getHours() - 1)) : null
+    case 'day':
+      return elapsedsec < 60 * 60 * 24 ? new Date(now.setHours(now.getHours() - 24)) : null
+    case 'week':
+      return elapsedsec < 60 * 60 * 24 * 7 ? new Date(now.setDate(now.getDate() - 7)) : null
+    case 'month':
+      return elapsedsec < 60 * 60 * 24 * 30 ? new Date(now.setDate(now.getDate() - 30)) : null
+    case 'all':
+      return null
   }
 }

@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { isInRange } from '@/js/utils.js'
+import { isInRange, getxAxesMin } from '@/js/utils.js'
 
 export default {
   components: {
@@ -41,24 +41,7 @@ export default {
       return this.range === 'all' ? null : new Date(this.humidArray[this.humidArray.length - 1].timestamp)
     },
     xAxesMin () {
-      let now = new Date(this.humidArray[this.humidArray.length - 1].timestamp)
-      let elapsedsec = (now - new Date(this.humidArray[0].timestamp)) / 1000
-      switch (this.range) {
-        case '1min':
-          return elapsedsec < 60 ? new Date(now.setMinutes(now.getMinutes() - 1)) : null
-        case '10min':
-          return elapsedsec < 60 * 10 ? new Date(now.setMinutes(now.getMinutes() - 10)) : null
-        case 'hour':
-          return elapsedsec < 60 * 60 ? new Date(now.setHours(now.getHours() - 1)) : null
-        case 'day':
-          return elapsedsec < 60 * 60 * 24 ? new Date(now.setHours(now.getHours() - 24)) : null
-        case 'week':
-          return elapsedsec < 60 * 60 * 24 * 7 ? new Date(now.setDate(now.getDate() - 7)) : null
-        case 'month':
-          return elapsedsec < 60 * 60 * 24 * 30 ? new Date(now.setDate(now.getDate() - 30)) : null
-        case 'all':
-          return null
-      }
+      return getxAxesMin(this.humidArray, this.range)
     },
     ...mapGetters([
       'humidArray'
