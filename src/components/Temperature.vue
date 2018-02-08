@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { getTimeStr, isInRange } from '@/js/utils.js'
+import { isInRange } from '@/js/utils.js'
 
 export default {
   components: {
@@ -51,19 +51,18 @@ export default {
         ave: Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
       })
       return {
-        labels: tempArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: tempArrayRanged.map((o) => o.ret)
+            data: tempArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '温度',
             yAxisID: 'y-axis-1',
             backgroundColor: '#FF7257',
-            data: tempDataArray
+            data: tempArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
           }
         ]
       }

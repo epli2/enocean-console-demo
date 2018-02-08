@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { getTimeStr, isInRange } from '@/js/utils.js'
+import { isInRange } from '@/js/utils.js'
 
 export default {
   components: {
@@ -51,19 +51,18 @@ export default {
         ave: Math.round(audioDataArray.reduce((sum, value) => sum + value) / audioArrayRanged.length * 100) / 100
       })
       return {
-        labels: audioArrayRanged.map((o) => getTimeStr(new Date(o.timestamp))),
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: audioArrayRanged.map((o) => o.ret)
+            data: audioArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '音量',
             yAxisID: 'y-axis-1',
             backgroundColor: '#87CEFA',
-            data: audioDataArray
+            data: audioArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
           }
         ]
       }

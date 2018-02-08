@@ -12,6 +12,13 @@ export default {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
+        xAxes: [{
+          type: 'time',
+          distribution: 'series',
+          time: {
+            unit: 'minute'
+          }
+        }],
         yAxes: [{
           type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
           display: true,
