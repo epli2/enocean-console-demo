@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { isInRange, getxAxesMin } from '@/js/utils.js'
+import { isInRange, getxAxesMin, reduceArray } from '@/js/utils.js'
 
 export default {
   components: {
@@ -62,19 +62,21 @@ export default {
         min: Math.min.apply(null, humidDataArray.map((v) => Math.round(v * 100) / 100)),
         ave: Math.round(humidDataArray.reduce((sum, value) => sum + value) / humidDataArray.length * 100) / 100
       })
+
+      let humidArrayRangedReduced = reduceArray(humidArrayRanged, this.range)
       return {
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: humidArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
+            data: humidArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '湿度',
             yAxisID: 'y-axis-1',
             backgroundColor: '#BAFF91',
-            data: humidArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
+            data: humidArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.y } })
           }
         ]
       }

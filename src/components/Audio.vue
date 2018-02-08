@@ -10,6 +10,7 @@
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
 import { isInRange, getxAxesMin } from '@/js/utils.js'
+import { simplifyPath } from '@/js/douglasPeucker.js'
 
 export default {
   components: {
@@ -62,19 +63,45 @@ export default {
         min: Math.min.apply(null, audioDataArray),
         ave: Math.round(audioDataArray.reduce((sum, value) => sum + value) / audioArrayRanged.length * 100) / 100
       })
+
+      let audioArrayRangedReduced
+      switch (this.range) {
+        case '1min':
+          audioArrayRangedReduced = audioArrayRanged.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
+          break
+        case '10min':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 2)
+          break
+        case 'hour':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 3)
+          break
+        case 'day':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 5)
+          break
+        case 'week':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 7)
+          break
+        case 'month':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 10)
+          break
+        case 'all':
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, audioArrayRanged.length / 10000)
+          break
+      }
+
       return {
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: audioArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
+            data: audioArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '音量',
             yAxisID: 'y-axis-1',
             backgroundColor: '#87CEFA',
-            data: audioArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
+            data: audioArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.y } })
           }
         ]
       }

@@ -1,4 +1,6 @@
-export { isInRange, getxAxesMin }
+import { simplifyPath } from '@/js/douglasPeucker.js'
+
+export { isInRange, getxAxesMin, reduceArray }
 
 function isInRange (range, isotime, nowTime) {
   switch (range) {
@@ -37,5 +39,24 @@ function getxAxesMin (dataArray, range) {
       return elapsedsec < 60 * 60 * 24 * 30 ? new Date(now.setDate(now.getDate() - 30)) : null
     case 'all':
       return null
+  }
+}
+
+function reduceArray (dataArray, range) {
+  switch (range) {
+    case '1min':
+      return dataArray.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
+    case '10min':
+      return dataArray.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
+    case 'hour':
+      return dataArray.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
+    case 'day':
+      return simplifyPath(dataArray, 1)
+    case 'week':
+      return simplifyPath(dataArray, 1)
+    case 'month':
+      return simplifyPath(dataArray, 2)
+    case 'all':
+      return dataArray.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
   }
 }

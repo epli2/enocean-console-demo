@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { isInRange, getxAxesMin } from '@/js/utils.js'
+import { isInRange, getxAxesMin, reduceArray } from '@/js/utils.js'
 
 export default {
   components: {
@@ -62,19 +62,21 @@ export default {
         min: Math.min.apply(null, tempDataArray.map((v) => Math.round(v * 100) / 100)),
         ave: Math.round(tempDataArray.reduce((sum, value) => sum + value) / tempDataArray.length * 100) / 100
       })
+
+      let tempArrayRangedReduced = reduceArray(tempArrayRanged, this.range)
       return {
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: tempArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
+            data: tempArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '温度',
             yAxisID: 'y-axis-1',
             backgroundColor: '#FF7257',
-            data: tempArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
+            data: tempArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.y } })
           }
         ]
       }

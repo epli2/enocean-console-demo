@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Chart from './Chart'
-import { isInRange, getxAxesMin } from '@/js/utils.js'
+import { isInRange, getxAxesMin, reduceArray } from '@/js/utils.js'
 
 export default {
   components: {
@@ -62,19 +62,22 @@ export default {
         min: Math.min.apply(null, illumDataArray),
         ave: Math.round(illumDataArray.reduce((sum, value) => sum + value) / illumArrayRanged.length * 100) / 100
       })
+
+      let illumArrayRangedReduced = reduceArray(illumArrayRanged, this.range)
+
       return {
         datasets: [
           {
             label: 'anomaly score',
             yAxisID: 'y-axis-2',
             backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            data: illumArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
+            data: illumArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.ret } })
           },
           {
             label: '照度',
             yAxisID: 'y-axis-1',
             backgroundColor: '#FFF02B',
-            data: illumArrayRanged.map((o) => { return { x: new Date(o.timestamp), y: o.data } })
+            data: illumArrayRangedReduced.map((o) => { return { x: new Date(o.timestamp), y: o.y } })
           }
         ]
       }
