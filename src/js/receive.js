@@ -5,6 +5,11 @@ const tempTopic = 'sensor/04016897/Temperature'
 const humidTopic = 'sensor/04016897/Humidity'
 const illumTopic = 'sensor/04016777/Illumination'
 
+/**
+ * サーバからセンサのデータを取得する関数
+ *
+ * @param {Object} store VuexのStoreオブジェクト
+ */
 function startReceive (store) {
   let namespace = '/api/socket'
   let socket = io.connect(location.protocol + '//' + document.domain + ':' + 5000 + namespace, {
@@ -39,6 +44,11 @@ function startReceive (store) {
   })
 }
 
+/**
+ * JSONファイルからデモ用データを読み込む関数
+ *
+ * @param {Object} store VuexのStoreオブジェクト
+ */
 function startDemo (store) {
   let demodataName = window.location.search === '' ? 'demodata.json' : window.location.search.slice(1)
   // eslint-disable-next-line
@@ -77,6 +87,13 @@ function startDemo (store) {
   })
 }
 
+/**
+ * VuexのStoreにデータを保存する関数
+ *
+ * @param {Object} store VuexのStoreオブジェクト
+ * @param {Object} data センサデータ
+ * @param {boolean} isDemo デモ用データかどうか
+ */
 function storeData (store, data, isDemo) {
   let dataFormatted = {
     data: data.value,

@@ -2,6 +2,14 @@ import { simplifyPath } from '@/js/douglasPeucker.js'
 
 export { isInRange, getxAxesMin, reduceArray }
 
+/**
+ * 指定された期間(range)に対象の時刻(isotime)が入っているか調べる関数
+ *
+ * @param {string} range 期間
+ * @param {Date} isotime 対象の時刻
+ * @param {Date} nowTime 現在時刻
+ * @returns {boolean}
+ */
 function isInRange (range, isotime, nowTime) {
   switch (range) {
     case '1min':
@@ -21,6 +29,13 @@ function isInRange (range, isotime, nowTime) {
   }
 }
 
+/**
+ * データの配列の指定期間における最初の時刻を求める関数
+ *
+ * @param {Array.<Object>} dataArray 対象のデータ配列
+ * @param {string} range 期間
+ * @returns {(Date|null)}
+ */
 function getxAxesMin (dataArray, range) {
   let now = new Date(dataArray[dataArray.length - 1].timestamp)
   let elapsedsec = (now - new Date(dataArray[0].timestamp)) / 1000
@@ -42,6 +57,13 @@ function getxAxesMin (dataArray, range) {
   }
 }
 
+/**
+ * 指定期間に対応した閾値を設定してデータを間引く関数
+ *
+ * @param {Array.<Object>} dataArray 対象のデータ配列
+ * @param {string} range 期間
+ * @returns {Array.<Object>} 間引いたデータ配列
+ */
 function reduceArray (dataArray, range) {
   switch (range) {
     case '1min':

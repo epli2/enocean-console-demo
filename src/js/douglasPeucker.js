@@ -2,6 +2,13 @@
 
 export { simplifyPath }
 
+/**
+ * 時系列データを間引く関数
+ *
+ * @param {Array.<Object>} origpoints 対象のデータ配列
+ * @param {number} tolerance 閾値
+ * @returns {Array.<Object>} 間引いたデータの配列
+ */
 function simplifyPath (origpoints, tolerance) {
   let points = origpoints.map((v, i) => { return {x: i, y: v.data, ret: v.ret, timestamp: v.timestamp} })
   let Line = function (p1, p2) {
