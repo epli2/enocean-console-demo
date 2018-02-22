@@ -43,18 +43,19 @@ function startDemo (store) {
   let demodataName = window.location.search === '' ? 'demodata.json' : window.location.search.slice(1)
   // eslint-disable-next-line
   $.getJSON(`static/js/${demodataName}`).done((msg) => {
+    const READNUM = 11
     // JSONファイルからデータを10件読んで配列に追加
-    msg.temperature.slice(msg.temperature.length - 11, msg.temperature.length - 1).forEach(d => storeData(store, d, true))
-    msg.humidity.slice(msg.humidity.length - 11, msg.humidity.length - 1).forEach(d => storeData(store, d, true))
-    msg.illumination.slice(msg.illumination.length - 11, msg.illumination.length - 1).forEach(d => storeData(store, d, true))
-    msg.audio.slice(msg.audio.length - 11, msg.audio.length - 1).forEach(d => storeData(store, d, true))
+    msg.temperature.slice(msg.temperature.length - READNUM, msg.temperature.length - 1).forEach(d => storeData(store, d, true))
+    msg.humidity.slice(msg.humidity.length - READNUM, msg.humidity.length - 1).forEach(d => storeData(store, d, true))
+    msg.illumination.slice(msg.illumination.length - READNUM, msg.illumination.length - 1).forEach(d => storeData(store, d, true))
+    msg.audio.slice(msg.audio.length - READNUM, msg.audio.length - 1).forEach(d => storeData(store, d, true))
     store.dispatch('sortData')
 
     // 残りのデータ
-    let restTemps = msg.temperature.slice(0, msg.temperature.length - 11)
-    let restHumids = msg.humidity.slice(0, msg.humidity.length - 11)
-    let restIllums = msg.illumination.slice(0, msg.illumination.length - 11)
-    let restAudios = msg.audio.slice(0, msg.audio.length - 11)
+    let restTemps = msg.temperature.slice(0, msg.temperature.length - READNUM)
+    let restHumids = msg.humidity.slice(0, msg.humidity.length - READNUM)
+    let restIllums = msg.illumination.slice(0, msg.illumination.length - READNUM)
+    let restAudios = msg.audio.slice(0, msg.audio.length - READNUM)
 
     // 気温, 湿度, 照度のデータを10秒ごとに追加
     setInterval(() => {
