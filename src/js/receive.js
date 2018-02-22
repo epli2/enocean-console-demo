@@ -79,7 +79,6 @@ function startDemo (store) {
 
 function storeData (store, data, isDemo) {
   let dataFormatted = {
-    sensor: data.topic,
     data: data.value,
     timestamp: data.timestamp,
     ret: data.ret
