@@ -42,11 +42,7 @@ function startReceive (store) {
 function startDemo (store) {
   let demodataName = window.location.search === '' ? 'demodata.json' : window.location.search.slice(1)
   // eslint-disable-next-line
-  $.ajax({
-    type: 'GET',
-    url: `static/js/${demodataName}`,
-    dataType: 'json'
-  }).done((msg) => {
+  $.getJSON(`static/js/${demodataName}`).done((msg) => {
     // JSONファイルからデータを10件読んで配列に追加
     msg.temperature.slice(msg.temperature.length - 11, msg.temperature.length - 1).forEach(d => storeData(store, d, true))
     msg.humidity.slice(msg.humidity.length - 11, msg.humidity.length - 1).forEach(d => storeData(store, d, true))
