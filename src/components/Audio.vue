@@ -85,7 +85,7 @@ export default {
           audioArrayRangedReduced = simplifyPath(audioArrayRanged, 10)
           break
         case 'all':
-          audioArrayRangedReduced = simplifyPath(audioArrayRanged, audioArrayRanged.length / 10000)
+          audioArrayRangedReduced = simplifyPath(audioArrayRanged, 0.0001)
           break
       }
 

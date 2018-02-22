@@ -57,6 +57,6 @@ function reduceArray (dataArray, range) {
     case 'month':
       return simplifyPath(dataArray, 2)
     case 'all':
-      return dataArray.map((v) => { return {y: v.data, ret: v.ret, timestamp: v.timestamp} })
+      return simplifyPath(dataArray, 0.00005)
   }
 }
