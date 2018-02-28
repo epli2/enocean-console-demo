@@ -17,13 +17,8 @@ function startReceive (store) {
   });
 
   ['temperature', 'humidity', 'illumination', 'audio'].forEach(p => {
-    // eslint-disable-next-line
-    $.ajax({
-      type: 'GET',
-      url: `http://localhost:5000/api/history/${p}/1000`,
-      dataType: 'json'
-    }).done((msg) => {
-      msg.data.forEach(d => storeData(store, d, false))
+    fetch(`http://localhost:5000/api/history/${p}/1000`).then((res) => res.json()).then((json) => {
+      json.data.forEach(d => storeData(store, d, false))
       store.dispatch('sortData')
     })
   })
@@ -51,21 +46,20 @@ function startReceive (store) {
  */
 function startDemo (store) {
   let demodataName = window.location.search === '' ? 'demodata.json' : window.location.search.slice(1)
-  // eslint-disable-next-line
-  $.getJSON(`static/js/${demodataName}`).done((msg) => {
+  fetch(`static/js/${demodataName}`).then((res) => res.json()).then((json) => {
     const READNUM = 11
     // JSONファイルからデータを10件読んで配列に追加
-    msg.temperature.slice(msg.temperature.length - READNUM, msg.temperature.length - 1).forEach(d => storeData(store, d, true))
-    msg.humidity.slice(msg.humidity.length - READNUM, msg.humidity.length - 1).forEach(d => storeData(store, d, true))
-    msg.illumination.slice(msg.illumination.length - READNUM, msg.illumination.length - 1).forEach(d => storeData(store, d, true))
-    msg.audio.slice(msg.audio.length - READNUM, msg.audio.length - 1).forEach(d => storeData(store, d, true))
+    json.temperature.slice(json.temperature.length - READNUM, json.temperature.length - 1).forEach(d => storeData(store, d, true))
+    json.humidity.slice(json.humidity.length - READNUM, json.humidity.length - 1).forEach(d => storeData(store, d, true))
+    json.illumination.slice(json.illumination.length - READNUM, json.illumination.length - 1).forEach(d => storeData(store, d, true))
+    json.audio.slice(json.audio.length - READNUM, json.audio.length - 1).forEach(d => storeData(store, d, true))
     store.dispatch('sortData')
 
     // 残りのデータ
-    let restTemps = msg.temperature.slice(0, msg.temperature.length - READNUM)
-    let restHumids = msg.humidity.slice(0, msg.humidity.length - READNUM)
-    let restIllums = msg.illumination.slice(0, msg.illumination.length - READNUM)
-    let restAudios = msg.audio.slice(0, msg.audio.length - READNUM)
+    let restTemps = json.temperature.slice(0, json.temperature.length - READNUM)
+    let restHumids = json.humidity.slice(0, json.humidity.length - READNUM)
+    let restIllums = json.illumination.slice(0, json.illumination.length - READNUM)
+    let restAudios = json.audio.slice(0, json.audio.length - READNUM)
 
     // 気温, 湿度, 照度のデータを10秒ごとに追加
     setInterval(() => {
