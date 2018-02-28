@@ -42,6 +42,10 @@ export default {
           xAxes: [{
             type: 'time',
             time: {
+              /* http://www.chartjs.org/docs/latest/axes/cartesian/linear.html#axis-range-settings
+              *  x軸(横軸)をどの範囲で表示するか指定する
+              *  max: 右端, min: 左端
+              */
               max: this.xAxesMax,
               min: this.xAxesMin,
               unit: this.timeUnit
